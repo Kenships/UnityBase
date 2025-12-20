@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 53
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086316249d6762c4cbf81f1a215736a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TinyGiantStudio.DevTools.DevTrails::TinyGiantStudio.DevTools.DevTrails.UserStats_Project
+  currentSessionIDCache: -1
+  probablyCrashes: 0
+  totalUseTime: 0
+  activeUseTime: 0
+  focusedUseTime: 0
+  _enteredPlayMode: 0
+  _playModeUseTime: 0
+  _sceneSaved: 0
+  _sceneOpened: 1
+  _sceneClosed: 1
+  _undoRedoCounter: 0
+  _compileCounter: 9
+  _totalTimeSpentCompiling: 0
+  _timeSpentCompiling: 118.753876
+  _totalTimeSpentInDomainReload: 0
+  _timeSpentInDomainReload: 25.363514
+  _logCounter_editor: 0
+  _logCounter_playMode: 0
+  _warningLogCounter_editor: 0
+  _warningLogCounter_playMode: 0
+  _errorLogCounter_editor: 3
+  _errorLogCounter_playMode: 0
+  _exceptionLogCounter_editor: 1
+  _exceptionLogCounter_playMode: 0
+  _projectOpenCounter: 0
+  _totalTimeSpentOpeningProject: 0
+  _devToolsEditorWindowOpened: 1
+  _pauseRecords:
+    sessionID: 0
+    sessions: []

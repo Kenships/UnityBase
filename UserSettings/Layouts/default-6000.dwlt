@@ -1284,9 +1284,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 0, y: 0, z: 0}
+    m_Target: {x: -6.8305902, y: 3.9729383, z: 2.8641365}
     speed: 2
-    m_Value: {x: 565.29144, y: 26.526295, z: 152.09166}
+    m_Value: {x: 0, y: 0, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1332,13 +1332,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
+    m_Target: {x: 0.013166776, y: 0.9733721, z: -0.22156112, w: 0.057786446}
     speed: 2
-    m_Value: {x: 0.054907277, y: 0.92247856, z: -0.3544142, w: 0.14292121}
+    m_Value: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
   m_Size:
-    m_Target: 10
+    m_Target: 3.262453
     speed: 2
-    m_Value: 172.6062
+    m_Value: 10
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1675,7 +1675,20 @@ MonoBehaviour:
     m_SelectedIDs: []
     m_LastClickedID:
       m_Data: 0
-    m_ExpandedIDs: []
+    m_ExpandedIDs:
+    - m_Data: 0
+    - m_Data: 45592
+    - m_Data: 45594
+    - m_Data: 45596
+    - m_Data: 45598
+    - m_Data: 45600
+    - m_Data: 45602
+    - m_Data: 45604
+    - m_Data: 45606
+    - m_Data: 45608
+    - m_Data: 45610
+    - m_Data: 45612
+    - m_Data: 45614
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1707,7 +1720,20 @@ MonoBehaviour:
     - m_Data: 49664
     m_LastClickedID:
       m_Data: 49664
-    m_ExpandedIDs: []
+    m_ExpandedIDs:
+    - m_Data: 0
+    - m_Data: 45592
+    - m_Data: 45594
+    - m_Data: 45596
+    - m_Data: 45598
+    - m_Data: 45600
+    - m_Data: 45602
+    - m_Data: 45604
+    - m_Data: 45606
+    - m_Data: 45608
+    - m_Data: 45610
+    - m_Data: 45612
+    - m_Data: 45614
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1846,7 +1872,7 @@ MonoBehaviour:
     m_DynamicPanelBehavior: 0
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 49664
+  m_LastSelectedObjectID: 0
 --- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
