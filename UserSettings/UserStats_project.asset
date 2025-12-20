@@ -23,16 +23,16 @@ MonoBehaviour:
   _sceneOpened: 1
   _sceneClosed: 1
   _undoRedoCounter: 0
-  _compileCounter: 9
+  _compileCounter: 47
   _totalTimeSpentCompiling: 0
-  _timeSpentCompiling: 118.753876
+  _timeSpentCompiling: 211.87505
   _totalTimeSpentInDomainReload: 0
-  _timeSpentInDomainReload: 25.363514
+  _timeSpentInDomainReload: 203.69542
   _logCounter_editor: 0
   _logCounter_playMode: 0
-  _warningLogCounter_editor: 0
+  _warningLogCounter_editor: 1
   _warningLogCounter_playMode: 0
-  _errorLogCounter_editor: 3
+  _errorLogCounter_editor: 27
   _errorLogCounter_playMode: 0
   _exceptionLogCounter_editor: 1
   _exceptionLogCounter_playMode: 0
