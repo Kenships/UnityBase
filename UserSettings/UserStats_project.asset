@@ -17,21 +17,21 @@ MonoBehaviour:
   totalUseTime: 101911
   activeUseTime: 2117
   focusedUseTime: 2214
-  _enteredPlayMode: 39
-  _playModeUseTime: 382
-  _sceneSaved: 10
-  _sceneOpened: 7
-  _sceneClosed: 131
+  _enteredPlayMode: 28
+  _playModeUseTime: 289
+  _sceneSaved: 7
+  _sceneOpened: 6
+  _sceneClosed: 88
   _undoRedoCounter: 3
-  _compileCounter: 203
+  _compileCounter: 198
   _totalTimeSpentCompiling: 0
-  _timeSpentCompiling: 410.30234
+  _timeSpentCompiling: 406.82587
   _totalTimeSpentInDomainReload: 0
-  _timeSpentInDomainReload: 970.8071
+  _timeSpentInDomainReload: 946.9619
   _logCounter_editor: 2
   _logCounter_playMode: 170
   _warningLogCounter_editor: 7932
-  _warningLogCounter_playMode: 18
+  _warningLogCounter_playMode: 16
   _errorLogCounter_editor: 146
   _errorLogCounter_playMode: 1
   _exceptionLogCounter_editor: 6
