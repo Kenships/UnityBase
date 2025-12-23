@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
-    [Service(typeof(SceneController), FindFromScene = true)]
+    [Service(typeof(SceneController), LoadScene = 0)]
     public class SceneController : MonoBehaviour<ITransition>
     {
         private ITransition _loadingOverlay;

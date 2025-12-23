@@ -14,9 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Sample/Scene/SampleGameScene.unity
     guid: 658ff64b6d7c0bd49b36451158f559c9
-  - enabled: 1
-    path: Assets/_Project/Scenes/BootStrap/SoundPooler.unity
-    guid: 17d8e4bfbb82c9142989e83ded477e0b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

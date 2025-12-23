@@ -11,7 +11,7 @@ using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
 
 namespace _Project.Scripts.Core.SoundPooling
 {
-    [Service(typeof(AudioPooler), FindFromScene = true)]
+    [Service(typeof(AudioPooler), LoadScene = 0)]
     public class AudioPooler : MonoBehaviour
     {
         #region DebugProperties
