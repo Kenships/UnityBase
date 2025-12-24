@@ -16,3 +16,4 @@ MonoBehaviour:
   masterVolume: {fileID: 11400000, guid: 2b24f834dd4e9b24a916511bcd667812, type: 2}
   musicVolume: {fileID: 11400000, guid: 91a6b446b0ae27649bacda77dac68720, type: 2}
   sfxVolume: {fileID: 11400000, guid: 7cfe1f8658044ee4ca950bd3f549ede8, type: 2}
+  mixer: {fileID: 24100000, guid: 996cf9c245ee1b14dbea11f329a233b7, type: 2}
