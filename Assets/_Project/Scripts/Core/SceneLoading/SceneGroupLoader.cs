@@ -12,10 +12,13 @@ namespace _Project.Scripts.Core.SceneLoading
     /// Limitations: Cannot set active scene on load.
     /// Potential Fix: change List<SceneReference> to SerializableDictionary<SceneReference, bool>
     /// </summary>
-    public class InitialSceneLoader : MonoBehaviour<ISceneBuilder>
+    public class SceneGroupLoader : MonoBehaviour<ISceneBuilder>
     {
         [SerializeField] private List<SceneReference> sceneRefs;
         [SerializeField] private bool withOverlay;
+        [SerializeField] private SceneController.SceneGroup sceneGroup = SceneController.SceneGroup.None;
+        [SerializeField] private bool replaceCurrentScene;
+        [SerializeField] private bool loadOnAwake;
         
         private ISceneBuilder _sceneController;
         protected override void Init(ISceneBuilder argument)
@@ -24,6 +27,12 @@ namespace _Project.Scripts.Core.SceneLoading
         }
 
         protected override void OnAwake()
+        {
+            if(!loadOnAwake) return;
+            LoadScenes();
+        }
+
+        public void LoadScenes()
         {
             SceneController.SceneLoadingStrategy loadingStrategy = _sceneController.NewStrategy();
 
@@ -36,7 +45,12 @@ namespace _Project.Scripts.Core.SceneLoading
                     continue;
                 }
                 
-                loadingStrategy.Load(scene.BuildIndex);
+                loadingStrategy.Load(scene.BuildIndex, false, sceneGroup);
+            }
+
+            if (replaceCurrentScene)
+            {
+                loadingStrategy.Unload(gameObject.scene.buildIndex);
             }
 
             loadingStrategy

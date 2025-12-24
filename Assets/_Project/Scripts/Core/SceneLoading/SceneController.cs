@@ -91,7 +91,6 @@ namespace _Project.Scripts.Core.SceneLoading
 
             foreach (var sceneBuildData in sceneLoadingStrategy.ScenesToLoad)
             {
-                Assert.IsNotNull(sceneBuildData, "SceneName was Null");
                 if (_loadedScenes.ContainsKey(sceneBuildData.Key))
                 {
                     Debug.LogWarning($"Scene {sceneBuildData} is already loaded. Skipping.");
@@ -158,7 +157,7 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 if (!_sceneGroupToSceneList.TryGetValue(sceneGroup, out List<int> value))
                 {
-                    List<int> sceneList = new List<int>();
+                    List<int> sceneList = new List<int>{sceneBuildIndex};
                     _sceneGroupToSceneList.Add(sceneGroup, sceneList);
                     _sceneGroupStack.Push(sceneList);
                 }
@@ -228,9 +227,7 @@ namespace _Project.Scripts.Core.SceneLoading
 
         private void RefreshSceneGroupStack()
         {
-            if(_sceneGroupStack.Count == 0) return;
-            
-            while(_sceneGroupStack.Peek().Count == 0)
+            while(_sceneGroupStack.Count != 0 && _sceneGroupStack.Peek().Count == 0)
             {
                 _sceneGroupStack.Pop();
             }

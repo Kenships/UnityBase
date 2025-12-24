@@ -764,9 +764,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e2dc247a1be4d0ea2bc8179aa583027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Core.SceneLoading.SceneUnloader
+  scenesToUnload:
+  - buildIndex: 3
   withOverlay: 0
-  sceneRef:
-    buildIndex: 3
 --- !u!114 &1629707069
 MonoBehaviour:
   m_ObjectHideFlags: 0

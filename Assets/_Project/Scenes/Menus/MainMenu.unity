@@ -310,9 +310,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 92353678}
-        m_TargetAssemblyTypeName: _Project.Scripts.Core.SceneLoading.SceneLoader,
+        m_TargetAssemblyTypeName: _Project.Scripts.Core.SceneLoading.SceneGroupLoader,
           Assembly-CSharp
-        m_MethodName: TransitionToScene
+        m_MethodName: LoadScenes
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -369,12 +369,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 92353673}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87a94ed4d94741cf9171f9df3c6c3360, type: 3}
+  m_Script: {fileID: 11500000, guid: 49943036d1bd4242b6b03c17dd8e32ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Core.SceneLoading.SceneLoader
-  sceneRef:
-    buildIndex: 4
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Core.SceneLoading.GroupSceneLoader
+  sceneRefs:
+  - buildIndex: 5
+  - buildIndex: 6
+  - buildIndex: 7
   withOverlay: 1
+  sceneGroup: 0
+  replaceCurrentScene: 1
+  loadOnAwake: 0
 --- !u!1 &182962101
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,7 +855,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Core.SceneLoading.SceneLoader
   sceneRef:
     buildIndex: 3
+  scenesToUnload: []
   withOverlay: 0
+  setActive: 0
+  sceneGroup: 1
 --- !u!114 &775938720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,7 +1008,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Core.SceneLoading.SceneLoader
   sceneRef:
     buildIndex: 2
+  scenesToUnload: []
   withOverlay: 0
+  setActive: 0
+  sceneGroup: 1
 --- !u!114 &955155409
 MonoBehaviour:
   m_ObjectHideFlags: 0

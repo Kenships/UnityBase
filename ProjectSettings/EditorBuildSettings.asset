@@ -18,8 +18,17 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Menus/CreditScene.unity
     guid: 2d7a76beb34583e4496afbea1eed94c7
   - enabled: 1
+    path: Assets/_Project/Scenes/Menus/GamePause.unity
+    guid: 94a610923e6709c4f92bcf444e2d92e0
+  - enabled: 1
     path: Assets/_Sample/Scene/SampleGameScene.unity
     guid: 658ff64b6d7c0bd49b36451158f559c9
+  - enabled: 1
+    path: Assets/_Sample/Scene/SampleGameSceneFloor.unity
+    guid: 818ac5731e50c1c4389aba350f69dfa8
+  - enabled: 1
+    path: Assets/_Sample/Scene/SampleGameSceneWalls.unity
+    guid: 5603c4280c918d040abb73d647aecb4a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

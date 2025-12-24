@@ -1,0 +1,9 @@
+﻿using UnityEngine.Events;
+
+namespace _Project.Scripts.Core.InputManagement.Interfaces
+{
+    public interface IOverrideReader
+    {
+        public event UnityAction OnEscapeEvent;
+    }
+}

@@ -285,6 +285,9 @@ MonoBehaviour:
   sceneRefs:
   - buildIndex: 1
   withOverlay: 0
+  sceneGroup: 1
+  replaceCurrentScene: 0
+  loadOnAwake: 1
 --- !u!4 &241062100
 Transform:
   m_ObjectHideFlags: 0

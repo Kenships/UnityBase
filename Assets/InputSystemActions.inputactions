@@ -991,6 +991,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Override",
+            "id": "71830113-0f25-49c8-8017-71959f5dd83d",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "ef5ba349-a9b8-4fc1-a4d4-9b85fae04aeb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8ecb6e35-208f-4d89-8745-5b0e3c114ad7",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7067c24e-e20e-43c0-a0bb-8c24ddc50b9e",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
