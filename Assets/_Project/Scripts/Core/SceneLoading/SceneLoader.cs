@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Util;
+﻿using _Project.Scripts.Core.SceneLoading.Interfaces;
+using _Project.Scripts.Util;
 using _Project.Scripts.Util.Scene;
 using Sisus.Init;
 using UnityEngine;
@@ -6,13 +7,14 @@ using UnityEngine.Serialization;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
-    public class SceneLoader : MonoBehaviour<SceneController>
+    public class SceneLoader : MonoBehaviour<ISceneBuilder>
     {
         [SerializeField] private SceneReference sceneRef;
         [SerializeField] private bool withOverlay;
+        [SerializeField] private bool setActive;
         
-        private SceneController _sceneController;
-        protected override void Init(SceneController argument)
+        private ISceneBuilder _sceneController;
+        protected override void Init(ISceneBuilder argument)
         {
             _sceneController = argument;
         }
@@ -28,7 +30,7 @@ namespace _Project.Scripts.Core.SceneLoading
             
             _sceneController
                 .NewStrategy()
-                .Load(sceneRef.BuildIndex)
+                .Load(sceneRef.BuildIndex, setActive)
                 .Unload(gameObject.scene.buildIndex)
                 .WithOverlay()
                 .Execute();
@@ -45,7 +47,7 @@ namespace _Project.Scripts.Core.SceneLoading
             
             _sceneController
                 .NewStrategy()
-                .Load(sceneRef.BuildIndex)
+                .Load(sceneRef.BuildIndex, setActive)
                 .WithOverlay(withOverlay)
                 .Execute();
         }

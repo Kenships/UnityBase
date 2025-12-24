@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Project.Scripts.Core.SceneLoading.Interfaces;
 using _Project.Scripts.UI.Interfaces;
-using _Project.Scripts.Util;
 using NUnit.Framework;
 using Sisus.Init;
 using UnityEngine;
@@ -9,18 +10,21 @@ using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
-    [Service(typeof(SceneController), LoadScene = 0)]
-    public class SceneController : MonoBehaviour<ITransition>
-    {
+    [Service(typeof(ISceneBuilder), typeof(ISceneFocusRetrieval), LoadScene = 0)]
+    public class SceneController : MonoBehaviour<ITransition>, ISceneBuilder, ISceneFocusRetrieval
+    { 
         private ITransition _loadingOverlay;
-        
+
         protected override void Init(ITransition argument)
         {
             _loadingOverlay = argument;
         }
-        
-        private readonly HashSet<int> _loadedScenes = new();
+
+        private readonly Dictionary<int, SceneGroup> _loadedScenes = new();
+        private readonly Stack<List<int>> _sceneGroupStack = new();
+        private readonly Dictionary<SceneGroup, List<int>> _sceneGroupToSceneList = new();
         private bool _isBusy;
+        
 
         protected override void OnAwake()
         {
@@ -34,7 +38,8 @@ namespace _Project.Scripts.Core.SceneLoading
                     continue;
                 }
 
-                _loadedScenes.Add(buildIndex);
+                _loadedScenes.Add(buildIndex, SceneGroup.None);
+                _sceneGroupStack.Push(new List<int> {buildIndex});
             }
         }
 
@@ -42,7 +47,18 @@ namespace _Project.Scripts.Core.SceneLoading
         {
             return new SceneLoadingStrategy(this);
         }
+
+        public bool IsFocused(int sceneBuildIndex)
+        {
+            return GetFocusedScenes().Contains(sceneBuildIndex);
+        }
+
+        public List<int> GetFocusedScenes()
+        {
+            return _sceneGroupStack.Count > 0 ? _sceneGroupStack.Peek() : new List<int>();
+        }
         
+
         private Coroutine ExecuteLoadingStrategy(SceneLoadingStrategy sceneLoadingStrategy)
         {
             if (_isBusy)
@@ -67,28 +83,31 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 yield return CleanUpUnusedAssetsRoutine();
             }
-            
-            foreach(var sceneBuildIndex in sceneLoadingStrategy.ScenesToUnload)
+
+            foreach (var sceneBuildIndex in sceneLoadingStrategy.ScenesToUnload)
             {
                 yield return UnloadSceneRoutine(sceneBuildIndex);
             }
 
-            foreach (var sceneBuildIndex in sceneLoadingStrategy.ScenesToLoad)
+            foreach (var sceneBuildData in sceneLoadingStrategy.ScenesToLoad)
             {
-                Assert.IsNotNull(sceneBuildIndex, "SceneName was Null");
-                if (_loadedScenes.Contains(sceneBuildIndex))
+                Assert.IsNotNull(sceneBuildData, "SceneName was Null");
+                if (_loadedScenes.ContainsKey(sceneBuildData.Key))
                 {
-                    Debug.LogWarning($"Scene {sceneBuildIndex} is already loaded. Skipping.");
+                    Debug.LogWarning($"Scene {sceneBuildData} is already loaded. Skipping.");
                     continue;
                 }
-                yield return AdditiveLoadRoutine(sceneBuildIndex, sceneBuildIndex == sceneLoadingStrategy.ActiveSceneBuildIndex);
+
+                yield return AdditiveLoadRoutine(sceneBuildData.Key, sceneBuildData.Value,
+                    sceneBuildData.Key == sceneLoadingStrategy.ActiveSceneBuildIndex);
             }
-            
+
             if (sceneLoadingStrategy.Overlay)
             {
                 _loadingOverlay.Hide();
                 yield return new WaitForSeconds(_loadingOverlay.TransitionDuration);
             }
+
             _isBusy = false;
         }
 
@@ -99,24 +118,24 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 yield return null;
             }
-            
         }
 
-        private IEnumerator AdditiveLoadRoutine(int sceneBuildIndex, bool setActive = false)
+        private IEnumerator AdditiveLoadRoutine(int sceneBuildIndex, SceneGroup sceneGroup, bool setActive = false)
         {
             AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneBuildIndex, LoadSceneMode.Additive);
-            
-            if(loadOp == null) yield break;
-            
+
+            if (loadOp == null)
+                yield break;
+
             loadOp.allowSceneActivation = false;
-            
+
             while (loadOp.progress < 0.9f)
             {
                 yield return null;
             }
-            
+
             loadOp.allowSceneActivation = true;
-            
+
             while (!loadOp.isDone)
             {
                 yield return null;
@@ -131,17 +150,37 @@ namespace _Project.Scripts.Core.SceneLoading
                     SceneManager.SetActiveScene(newScene);
                 }
             }
+
+            _loadedScenes.Add(sceneBuildIndex, sceneGroup);
             
-            _loadedScenes.Add(sceneBuildIndex);
+            // Update SceneGroupStack
+            if (sceneGroup != SceneGroup.None)
+            {
+                if (!_sceneGroupToSceneList.TryGetValue(sceneGroup, out List<int> value))
+                {
+                    List<int> sceneList = new List<int>();
+                    _sceneGroupToSceneList.Add(sceneGroup, sceneList);
+                    _sceneGroupStack.Push(sceneList);
+                }
+                else
+                {
+                    value.Add(sceneBuildIndex);
+                }
+            }
+            else
+            {
+                _sceneGroupStack.Push(new List<int> {sceneBuildIndex});
+            }
         }
 
         private IEnumerator UnloadSceneRoutine(int buildIndex)
         {
-            if (!_loadedScenes.Contains(buildIndex))
+            if (!_loadedScenes.ContainsKey(buildIndex))
             {
                 Debug.LogWarning($"Scene {buildIndex} is not loaded. Skipping.");
                 yield break;
             }
+
             AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(buildIndex);
 
             if (unloadOp == null)
@@ -154,59 +193,103 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 yield return null;
             }
-
+            
+            // Update SceneGroupStack
+            RefreshSceneGroupStack();
+            
+            SceneGroup sceneGroup = _loadedScenes[buildIndex];
+            if (sceneGroup != SceneGroup.None)
+            {
+                _sceneGroupToSceneList[sceneGroup].Remove(buildIndex);
+                if (_sceneGroupToSceneList[sceneGroup].Count == 0)
+                {
+                    _sceneGroupToSceneList.Remove(sceneGroup);
+                }
+            }
+            else
+            {
+                if (_sceneGroupStack.Peek()[0] == buildIndex)
+                {
+                    _sceneGroupStack.Pop();
+                }
+                
+                foreach (var sceneList in _sceneGroupStack)
+                {
+                    if (sceneList.Contains(buildIndex))
+                    {
+                        sceneList.Remove(buildIndex);
+                    }
+                }
+            }
+            
+            RefreshSceneGroupStack();
             _loadedScenes.Remove(buildIndex);
         }
-        
+
+        private void RefreshSceneGroupStack()
+        {
+            if(_sceneGroupStack.Count == 0) return;
+            
+            while(_sceneGroupStack.Peek().Count == 0)
+            {
+                _sceneGroupStack.Pop();
+            }
+        }
+
         #region Scene Loading Strategy
+
+        public enum SceneGroup
+        {
+            Level,
+            None
+        }
+
         public class SceneLoadingStrategy
         {
-            public HashSet<int> ScenesToLoad { get; } = new();
+            public Dictionary<int, SceneGroup> ScenesToLoad { get; } = new();
             public List<int> ScenesToUnload { get; } = new();
             public int ActiveSceneBuildIndex { get; private set; }
             public bool ClearUnusedAssets { get; private set; } = false;
             public bool Overlay { get; private set; } = false;
-            
+
             private readonly SceneController _controller;
-            
+
             public SceneLoadingStrategy(SceneController controller)
             {
                 _controller = controller;
             }
 
-            public SceneLoadingStrategy Load(int sceneBuildIndex, bool setActive = false)
+            public SceneLoadingStrategy Load(int sceneBuildIndex, bool setActive = false, SceneGroup sceneGroup = SceneGroup.None)
             {
-                ScenesToLoad.Add(sceneBuildIndex);
+                ScenesToLoad.Add(sceneBuildIndex, sceneGroup);
                 ActiveSceneBuildIndex = setActive ? sceneBuildIndex : ActiveSceneBuildIndex;
                 return this;
             }
-            
+
             public SceneLoadingStrategy Unload(int sceneBuildIndex)
             {
                 ScenesToUnload.Add(sceneBuildIndex);
                 return this;
             }
-            
+
             public SceneLoadingStrategy WithOverlay(bool withOverlay = true)
             {
                 Overlay = withOverlay;
                 return this;
             }
-            
+
             public SceneLoadingStrategy WithClearUnusedAssets()
             {
                 ClearUnusedAssets = true;
                 return this;
             }
-            
 
             public Coroutine Execute()
             {
                 return _controller.ExecuteLoadingStrategy(this);
             }
         }
-#endregion
+
+        #endregion
     }
 }
-
-

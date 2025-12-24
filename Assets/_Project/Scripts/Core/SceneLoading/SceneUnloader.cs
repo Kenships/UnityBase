@@ -1,17 +1,18 @@
-﻿using _Project.Scripts.Util.Scene;
+﻿using _Project.Scripts.Core.SceneLoading.Interfaces;
+using _Project.Scripts.Util.Scene;
 using Sisus.Init;
 using UnityEngine;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
-    public class SceneUnloader : MonoBehaviour<SceneController>
+    public class SceneUnloader : MonoBehaviour<ISceneBuilder>
     {
         [SerializeField] private bool withOverlay;
         [SerializeField] private SceneReference sceneRef;
         
-        private SceneController _sceneController;
+        private ISceneBuilder _sceneController;
         
-        protected override void Init(SceneController sceneController)
+        protected override void Init(ISceneBuilder sceneController)
         {
             _sceneController = sceneController;
         }

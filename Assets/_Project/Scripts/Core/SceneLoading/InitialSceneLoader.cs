@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Project.Scripts.Core.SceneLoading.Interfaces;
 using _Project.Scripts.Util;
 using _Project.Scripts.Util.Scene;
 using Sisus.Init;
@@ -6,13 +7,18 @@ using UnityEngine;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
-    public class InitialSceneLoader : MonoBehaviour<SceneController>
+    /// <summary>
+    /// Loads multiple scenes on awake.
+    /// Limitations: Cannot set active scene on load.
+    /// Potential Fix: change List<SceneReference> to SerializableDictionary<SceneReference, bool>
+    /// </summary>
+    public class InitialSceneLoader : MonoBehaviour<ISceneBuilder>
     {
         [SerializeField] private List<SceneReference> sceneRefs;
         [SerializeField] private bool withOverlay;
         
-        private SceneController _sceneController;
-        protected override void Init(SceneController argument)
+        private ISceneBuilder _sceneController;
+        protected override void Init(ISceneBuilder argument)
         {
             _sceneController = argument;
         }
