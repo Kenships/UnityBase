@@ -64,7 +64,7 @@ namespace _Project.Scripts.Core.SoundPooling.ScriptableObject
         
         private void MuteOnValueChanged(bool isMute)
         {
-            mixer.SetFloat("Master", LinearToDb(0));
+            mixer.SetFloat("Master", isMute ? LinearToDb(0) : LinearToDb(MasterVolume));
         }
 
         private void SfxVolumeOnValueChanged(float volume)
@@ -84,9 +84,8 @@ namespace _Project.Scripts.Core.SoundPooling.ScriptableObject
 
         private float LinearToDb(float volume)
         {
-            Math.Clamp(volume, 0.0001f, 100f);
             float volumePercent = volume / 100f;
-
+            volumePercent = Mathf.Clamp(volumePercent, 0.0001f, 1f);
             return Mathf.Log10(volumePercent) * 20f;
         }
     }
