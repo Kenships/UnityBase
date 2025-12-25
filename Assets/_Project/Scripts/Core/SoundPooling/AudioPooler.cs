@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Core.SoundPooling.Implement;
 using _Project.Scripts.Core.SoundPooling.Interface;
 using AYellowpaper.SerializedCollections;
@@ -11,28 +12,39 @@ using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
 
 namespace _Project.Scripts.Core.SoundPooling
 {
+    public enum AudioOverridePolicy
+    {
+        DontPlayOnFull,
+        OverrideFirst
+    }
+
     [Service(typeof(AudioPooler), LoadScene = 0)]
     public class AudioPooler : MonoBehaviour
     {
         #region DebugProperties
+
         public int NumberOfActiveSounds { get; private set; }
+
         #endregion
-        
+
         [SerializeField] private bool createBuffer;
         [SerializeField] private int bufferSize;
+
+        [SerializeField] private AudioOverridePolicy audioOverridePolicy;
 
         [SerializeField] private SerializedDictionary<AudioType, int> maxAudioSources;
         [SerializeField] private SerializedDictionary<AudioType, AudioMixerGroup> audioMixerGroups;
         [SerializeField] private List<PooledAudioSource> inactiveSources;
         [SerializeField] private SerializedDictionary<AudioType, List<PooledAudioSource>> activeSources;
-        
+
         private readonly HashSet<AudioType> _audioTypes = new();
+
         private void OnValidate()
         {
 #if UNITY_EDITOR
             //Add new keys
             _audioTypes.Clear();
-            _audioTypes.AddRange((AudioType[]) Enum.GetValues(typeof(AudioType)));
+            _audioTypes.AddRange((AudioType[])Enum.GetValues(typeof(AudioType)));
             foreach (AudioType audioType in _audioTypes)
             {
                 if (!maxAudioSources.ContainsKey(audioType))
@@ -45,7 +57,7 @@ namespace _Project.Scripts.Core.SoundPooling
                     audioMixerGroups.Add(audioType, null);
                 }
             }
-            
+
             //Remove deleted Keys
             var keysToRemoveAudioSourceMax = new List<AudioType>();
             var keysToRemoveAudioMixerGroups = new List<AudioType>();
@@ -61,14 +73,13 @@ namespace _Project.Scripts.Core.SoundPooling
                 {
                     keysToRemoveAudioMixerGroups.Add(keyValue.Key);
                 }
-                
             }
-            
+
             foreach (var key in keysToRemoveAudioSourceMax)
             {
                 maxAudioSources.Remove(key);
             }
-            
+
             foreach (var key in keysToRemoveAudioMixerGroups)
             {
                 audioMixerGroups.Remove(key);
@@ -85,8 +96,8 @@ namespace _Project.Scripts.Core.SoundPooling
                 audioSource.gameObject.SetActive(false);
                 inactiveSources.Add(audioSource);
             }
-            
-            foreach (AudioType audioType in (AudioType []) Enum.GetValues(typeof(AudioType)))
+
+            foreach (AudioType audioType in (AudioType[])Enum.GetValues(typeof(AudioType)))
             {
                 activeSources[audioType] = new List<PooledAudioSource>();
             }
@@ -101,7 +112,7 @@ namespace _Project.Scripts.Core.SoundPooling
         {
             return new AudioConfig3D(this, clip);
         }
-        
+
         public IAudioPlayer Play(IAudioConfig audioConfig)
         {
             // check for capacity availability
@@ -123,17 +134,35 @@ namespace _Project.Scripts.Core.SoundPooling
                 {
                     Debug.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
                                      $"Replaced playing {audioSource.Clip.name} with " +
-                                     $"{audioConfig.Clip.name}" );
+                                     $"{audioConfig.Clip.name}");
                     audioSource.Stop();
                     audioSource.Initialize(audioConfig);
+                    audioSource.gameObject.SetActive(true);
                     audioSource.Play();
                     return new AudioPlayer(audioSource);
                 }
 
-                Debug.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
-                                 $"Skip playing {audioConfig.Clip.name}" );
-                return new EmptyAudioPlayer();
+                switch (audioOverridePolicy)
+                {
+                    case AudioOverridePolicy.DontPlayOnFull:
+                        Debug.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
+                                         $"Skip playing {audioConfig.Clip.name}");
+                        return new EmptyAudioPlayer();
+                    case AudioOverridePolicy.OverrideFirst:
+                        PooledAudioSource first = activeSources[audioConfig.AudioType]
+                            .First(val => val.Priority == audioConfig.Priority);
+                        Debug.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
+                                         $"Replaced playing {first.Clip.name} with " +
+                                         $"{audioConfig.Clip.name}");
+                        first.Stop();
+                        first.Initialize(audioConfig);
+                        first.gameObject.SetActive(true);
+                        first.Play();
+                        
+                        return new AudioPlayer(first);
+                }
             }
+
             // Check for Audio Availability
             if (inactiveSources.Count > 0)
             {
@@ -172,7 +201,7 @@ namespace _Project.Scripts.Core.SoundPooling
         {
             GameObject audioObject = new GameObject("AudioSource");
             audioObject.transform.SetParent(transform);
-                    
+
             PooledAudioSource audioComponent = audioObject.AddComponent<PooledAudioSource>();
 
             return audioComponent;

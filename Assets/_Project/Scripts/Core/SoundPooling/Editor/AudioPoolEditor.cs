@@ -12,6 +12,7 @@ namespace _Project.Scripts.Core.SoundPooling.Editor
         private SerializedProperty _audioMixerGroups;
         private SerializedProperty _inactiveSources;
         private SerializedProperty _activeSources;
+        private SerializedProperty _audioOverridePolicy;
 
         private void OnEnable()
         {
@@ -21,6 +22,7 @@ namespace _Project.Scripts.Core.SoundPooling.Editor
             _audioMixerGroups = serializedObject.FindProperty("audioMixerGroups");
             _inactiveSources = serializedObject.FindProperty("inactiveSources");
             _activeSources = serializedObject.FindProperty("activeSources");
+            _audioOverridePolicy =  serializedObject.FindProperty("audioOverridePolicy");
         }
 
         public override void OnInspectorGUI()
@@ -54,6 +56,7 @@ namespace _Project.Scripts.Core.SoundPooling.Editor
             EditorGUILayout.PropertyField(_audioMixerGroups);
             EditorGUILayout.PropertyField(_inactiveSources);
             EditorGUILayout.PropertyField(_activeSources);
+            EditorGUILayout.PropertyField(_audioOverridePolicy);
 
             serializedObject.ApplyModifiedProperties();
         }

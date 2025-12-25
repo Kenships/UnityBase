@@ -40,7 +40,7 @@ namespace _Project.Scripts.Core.SoundPooling.Implement
         public TSelf SetPitch(float pitch)
         {
             Pitch = pitch;
-            return (TSelf)this;
+            return (TSelf) this;
         }
         
         public TSelf RandomizePitch(float min = 0.05f, float max = 0.05f)
@@ -57,13 +57,13 @@ namespace _Project.Scripts.Core.SoundPooling.Implement
         public TSelf AddPriority(int priority)
         {
             Priority = priority;
-            return (TSelf)this;
+            return (TSelf) this;
         }
 
         public TSelf MarkFrequent()
         {
             Priority = 0;
-            return (TSelf)this;
+            return (TSelf) this;
         }
 
         public IAudioPlayer Play() => _audioPooler.Play(this);
