@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEditor;
 
 namespace _Project.Scripts.Core.SoundPooling.Editor
@@ -58,12 +58,17 @@ namespace _Project.Scripts.Core.SoundPooling.Editor
 
             EditorGUILayout.PropertyField(_maxAudioSource);
             EditorGUILayout.PropertyField(_audioMixerGroups);
-            EditorGUILayout.PropertyField(_activeSourcesByAudioType);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(_audioOverridePolicy);
+
             EditorGUILayout.Space();
             
             EditorGUILayout.PropertyField(_numberOfActiveSources);
             EditorGUILayout.PropertyField(_numberOfInactiveSources);
-            EditorGUILayout.PropertyField(_audioOverridePolicy);
+            
+            EditorGUILayout.PropertyField(_activeSourcesByAudioType);
             EditorGUILayout.PropertyField(_activeSourcesBySceneIndex);
 
             serializedObject.ApplyModifiedProperties();
