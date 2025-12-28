@@ -5,10 +5,11 @@ using _Project.Scripts.Util.Scene;
 using Sisus.Init;
 using UnityEngine;
 using UnityEngine.Serialization;
+using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
-    public class SceneLoader : MonoBehaviour<ISceneBuilder>
+    public class SceneLoader : MonoBehaviour<ISceneBuilder, ILogger>
     {
         [SerializeField] private SceneReference sceneRef;
         [SerializeField] private List<SceneReference> scenesToUnload;
@@ -17,16 +18,18 @@ namespace _Project.Scripts.Core.SceneLoading
         [SerializeField] private SceneController.SceneGroup sceneGroup = SceneController.SceneGroup.None;
         
         private ISceneBuilder _sceneController;
-        protected override void Init(ISceneBuilder argument)
+        private ILogger _logger;
+        protected override void Init(ISceneBuilder argument, ILogger logger)
         {
             _sceneController = argument;
+            _logger = logger;
         }
 
         public void LoadSceneAdditive()
         {
             if (sceneRef.BuildIndex == 0)
             {
-                Debug.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
+                _logger.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
                                $"Tried to load BootStrap. Skip Scene loading");
                 return;
             }
@@ -40,7 +43,7 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 if (scene.BuildIndex == 0)
                 {
-                    Debug.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
+                    _logger.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
                                    $"Tried to unload BootStrap. Skip Scene unloading");
                     continue;
                 }

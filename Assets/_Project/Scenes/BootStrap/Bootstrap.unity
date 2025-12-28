@@ -251,6 +251,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1673836145}
+  - {fileID: 1801993996}
+  - {fileID: 472935762}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &241062098
@@ -473,6 +475,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!4 &472935762 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+  m_PrefabInstance: {fileID: 4963641165978690805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &575351707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,6 +1227,149 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.LoadingOverlay
   fadeDuration: 0.25
+--- !u!1 &1801993995
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1801993996}
+  - component: {fileID: 1801993997}
+  m_Layer: 0
+  m_Name: LoggerParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1801993996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801993995}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 195077423}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1801993997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801993995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a0f0f509e024fdcb13c453fbbb4cd8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Util.Logger.LoggerParent
+  isEnabled: 1
+--- !u!1001 &4963641165978690805
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 195077423}
+    m_Modifications:
+    - target: {fileID: 4538906455721163682, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_Name
+      value: SceneLogger
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.19081
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.89414
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7343248231596295286, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: toClients
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7343248231596295286, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4538906455721163682, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4963641165978690808}
+  m_SourcePrefab: {fileID: 100100000, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+--- !u!1 &4963641165978690806 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4538906455721163682, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+  m_PrefabInstance: {fileID: 4963641165978690805}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4963641165978690807 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5396991085558920601, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+  m_PrefabInstance: {fileID: 4963641165978690805}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963641165978690806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b656dc6cfe7e48b591d5fe53a6791297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Util.Logger.SceneLogger
+--- !u!114 &4963641165978690808
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963641165978690806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a0a779e9bbcba646a5e1b890dbb3f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: InitArgs::Sisus.Init.Internal.ServiceTag
+  service: {fileID: 4963641165978690807}
+  toClients: 4
+  definingType:
+    scriptAssetGuid: 13dfe4f8c25756942bdc6654c06f1972
+    TypeNameAndAssembly: _Project.Scripts.Util.Logger.Interface.ILogger, Assembly-CSharp
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

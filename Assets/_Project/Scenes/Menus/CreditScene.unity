@@ -256,6 +256,100 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120570136}
   m_CullTransparentMesh: 1
+--- !u!1001 &343522592
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4538906455721163682, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_Name
+      value: SceneLogger
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.69795
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.78736
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108133212018177522, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7343248231596295286, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4538906455721163682, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 343522595}
+  m_SourcePrefab: {fileID: 100100000, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+--- !u!1 &343522593 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4538906455721163682, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+  m_PrefabInstance: {fileID: 343522592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &343522594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5396991085558920601, guid: 43d604445f5a79a4c9e3e299f0c46527, type: 3}
+  m_PrefabInstance: {fileID: 343522592}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343522593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b656dc6cfe7e48b591d5fe53a6791297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Util.Logger.SceneLogger
+--- !u!114 &343522595
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343522593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a0a779e9bbcba646a5e1b890dbb3f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: InitArgs::Sisus.Init.Internal.ServiceTag
+  service: {fileID: 343522594}
+  toClients: 4
+  definingType:
+    scriptAssetGuid: 13dfe4f8c25756942bdc6654c06f1972
+    TypeNameAndAssembly: _Project.Scripts.Util.Logger.Interface.ILogger, Assembly-CSharp
 --- !u!1 &655412435
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +863,7 @@ MonoBehaviour:
   scenesToUnload:
   - buildIndex: 3
   withOverlay: 0
+  disable: 0
 --- !u!114 &1629707069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -926,3 +1021,4 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1009469499}
+  - {fileID: 343522592}

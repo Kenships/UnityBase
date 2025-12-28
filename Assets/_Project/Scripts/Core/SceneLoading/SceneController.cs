@@ -1,26 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Core.SceneLoading.Interfaces;
 using _Project.Scripts.UI.Interfaces;
 using NUnit.Framework;
 using Sisus.Init;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
     [Service(typeof(ISceneBuilder), typeof(ISceneFocusRetrieval), LoadScene = 0)]
-    public class SceneController : MonoBehaviour<ITransition>, ISceneBuilder, ISceneFocusRetrieval
+    public class SceneController : MonoBehaviour<ITransition, ILogger>, ISceneBuilder, ISceneFocusRetrieval
     { 
         private ITransition _loadingOverlay;
+        private ILogger _logger;
 
-        protected override void Init(ITransition argument)
+        protected override void Init(ITransition argument, ILogger logger)
         {
             _loadingOverlay = argument;
+            _logger = logger;
         }
 
         private readonly Dictionary<int, SceneGroup> _loadedScenes = new();
+        private readonly HashSet<int> _disabledScenes = new();
         private readonly Stack<List<int>> _sceneGroupStack = new();
         private readonly Dictionary<SceneGroup, List<int>> _sceneGroupToSceneList = new();
         private bool _isBusy;
@@ -63,7 +68,7 @@ namespace _Project.Scripts.Core.SceneLoading
         {
             if (_isBusy)
             {
-                Debug.LogWarning("SceneLoading is busy. Cannot load new strategy.");
+                _logger.LogWarning("SceneLoading is busy. Cannot load new strategy.");
                 return null;
             }
 
@@ -91,14 +96,13 @@ namespace _Project.Scripts.Core.SceneLoading
 
             foreach (var sceneBuildData in sceneLoadingStrategy.ScenesToLoad)
             {
-                if (_loadedScenes.ContainsKey(sceneBuildData.Key))
-                {
-                    Debug.LogWarning($"Scene {sceneBuildData} is already loaded. Skipping.");
-                    continue;
-                }
-
                 yield return AdditiveLoadRoutine(sceneBuildData.Key, sceneBuildData.Value,
                     sceneBuildData.Key == sceneLoadingStrategy.ActiveSceneBuildIndex);
+            }
+
+            foreach (var sceneBuildIndex in sceneLoadingStrategy.ScenesToDisable)
+            {
+                yield return DisableSceneRoutine(sceneBuildIndex);
             }
 
             if (sceneLoadingStrategy.Overlay)
@@ -121,25 +125,42 @@ namespace _Project.Scripts.Core.SceneLoading
 
         private IEnumerator AdditiveLoadRoutine(int sceneBuildIndex, SceneGroup sceneGroup, bool setActive = false)
         {
-            AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneBuildIndex, LoadSceneMode.Additive);
-
-            if (loadOp == null)
+            if (_loadedScenes.ContainsKey(sceneBuildIndex))
+            {
+                _logger.LogWarning($"Scene {sceneBuildIndex} is already loaded. Skipping.");
                 yield break;
-
-            loadOp.allowSceneActivation = false;
-
-            while (loadOp.progress < 0.9f)
-            {
-                yield return null;
             }
-
-            loadOp.allowSceneActivation = true;
-
-            while (!loadOp.isDone)
+            
+            if (_disabledScenes.Contains(sceneBuildIndex))
             {
-                yield return null;
+                foreach (var root in SceneManager.GetSceneByBuildIndex(sceneBuildIndex).GetRootGameObjects())
+                {
+                    root.SetActive(false);
+                }
+                
             }
+            else
+            {
+                AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneBuildIndex, LoadSceneMode.Additive);
 
+                if (loadOp == null)
+                    yield break;
+
+                loadOp.allowSceneActivation = false;
+
+                while (loadOp.progress < 0.9f)
+                {
+                    yield return null;
+                }
+
+                loadOp.allowSceneActivation = true;
+
+                while (!loadOp.isDone)
+                {
+                    yield return null;
+                }
+            }
+            
             if (setActive)
             {
                 Scene newScene = SceneManager.GetSceneByBuildIndex(sceneBuildIndex);
@@ -172,11 +193,32 @@ namespace _Project.Scripts.Core.SceneLoading
             }
         }
 
+        private IEnumerator DisableSceneRoutine(int sceneBuildIndex)
+        {
+            if (!_loadedScenes.ContainsKey(sceneBuildIndex))
+            {
+                _logger.LogWarning($"Scene {sceneBuildIndex} is not loaded. Skipping.");
+                yield break;
+            }
+
+            foreach (var root in SceneManager.GetSceneByBuildIndex(sceneBuildIndex).GetRootGameObjects())
+            {
+                root.SetActive(false);
+            }
+            
+            _disabledScenes.Add(sceneBuildIndex);
+            
+            //Update SceneGroupStack
+            UpdateSceneGroupStackOnRemove(sceneBuildIndex);
+
+            _loadedScenes.Remove(sceneBuildIndex);
+        }
+
         private IEnumerator UnloadSceneRoutine(int buildIndex)
         {
             if (!_loadedScenes.ContainsKey(buildIndex))
             {
-                Debug.LogWarning($"Scene {buildIndex} is not loaded. Skipping.");
+                _logger.LogWarning($"Scene {buildIndex} is not loaded. Skipping.");
                 yield break;
             }
 
@@ -184,7 +226,7 @@ namespace _Project.Scripts.Core.SceneLoading
 
             if (unloadOp == null)
             {
-                Debug.LogWarning($"Scene {buildIndex} failed to load.");
+                _logger.LogWarning($"Scene {buildIndex} failed to load.");
                 yield break;
             }
 
@@ -194,6 +236,13 @@ namespace _Project.Scripts.Core.SceneLoading
             }
             
             // Update SceneGroupStack
+            UpdateSceneGroupStackOnRemove(buildIndex);
+            
+            _loadedScenes.Remove(buildIndex);
+        }
+
+        private void UpdateSceneGroupStackOnRemove(int buildIndex)
+        {
             RefreshSceneGroupStack();
             
             SceneGroup sceneGroup = _loadedScenes[buildIndex];
@@ -222,7 +271,6 @@ namespace _Project.Scripts.Core.SceneLoading
             }
             
             RefreshSceneGroupStack();
-            _loadedScenes.Remove(buildIndex);
         }
 
         private void RefreshSceneGroupStack()
@@ -245,6 +293,7 @@ namespace _Project.Scripts.Core.SceneLoading
         {
             public Dictionary<int, SceneGroup> ScenesToLoad { get; } = new();
             public List<int> ScenesToUnload { get; } = new();
+            public List<int> ScenesToDisable { get; } = new();
             public int ActiveSceneBuildIndex { get; private set; }
             public bool ClearUnusedAssets { get; private set; } = false;
             public bool Overlay { get; private set; } = false;
@@ -260,6 +309,21 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 ScenesToLoad.Add(sceneBuildIndex, sceneGroup);
                 ActiveSceneBuildIndex = setActive ? sceneBuildIndex : ActiveSceneBuildIndex;
+                return this;
+            }
+
+            public SceneLoadingStrategy LoadDisabled(int sceneBuildIndex, bool setActive = false,
+                SceneGroup sceneGroup = SceneGroup.None)
+            {
+                ScenesToLoad.Add(sceneBuildIndex, sceneGroup);
+                ScenesToDisable.Add(sceneBuildIndex);
+                ActiveSceneBuildIndex = setActive ? sceneBuildIndex : ActiveSceneBuildIndex;
+                return this;
+            }
+
+            public SceneLoadingStrategy Disable(int sceneBuildIndex)
+            {
+                ScenesToDisable.Add(sceneBuildIndex);
                 return this;
             }
 

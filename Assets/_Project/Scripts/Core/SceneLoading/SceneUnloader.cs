@@ -3,19 +3,22 @@ using _Project.Scripts.Core.SceneLoading.Interfaces;
 using _Project.Scripts.Util.Scene;
 using Sisus.Init;
 using UnityEngine;
+using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
-    public class SceneUnloader : MonoBehaviour<ISceneBuilder>
+    public class SceneUnloader : MonoBehaviour<ISceneBuilder, ILogger>
     {
         [SerializeField] private List<SceneReference> scenesToUnload;
         [SerializeField] private bool withOverlay;
+        [SerializeField] private bool disable;
         
         private ISceneBuilder _sceneController;
-        
-        protected override void Init(ISceneBuilder sceneController)
+        private ILogger _logger;
+        protected override void Init(ISceneBuilder sceneController, ILogger logger)
         {
             _sceneController = sceneController;
+            _logger = logger;
         }
 
         public void UnloadScene()
@@ -27,11 +30,19 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 if (sceneRef.BuildIndex == 0)
                 {
-                    Debug.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
-                                   $"Tried to unload BootStrap. Skip Scene unloading");
+                    _logger.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
+                                     $"Tried to unload BootStrap. Skip Scene unloading");
                     return;
                 }
-                loadingStrategy.Unload(sceneRef.BuildIndex);
+
+                if (disable)
+                {
+                    loadingStrategy.Disable(sceneRef.BuildIndex);
+                }
+                else
+                {
+                    loadingStrategy.Unload(sceneRef.BuildIndex);
+                }
             }
             
             loadingStrategy.WithOverlay(withOverlay).Execute();

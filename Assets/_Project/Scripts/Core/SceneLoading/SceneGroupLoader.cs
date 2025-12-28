@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using _Project.Scripts.Core.SceneLoading.Interfaces;
-using _Project.Scripts.Util;
 using _Project.Scripts.Util.Scene;
 using Sisus.Init;
 using UnityEngine;
+using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
 
 namespace _Project.Scripts.Core.SceneLoading
 {
@@ -12,7 +12,7 @@ namespace _Project.Scripts.Core.SceneLoading
     /// Limitations: Cannot set active scene on load.
     /// Potential Fix: change List<SceneReference> to SerializableDictionary<SceneReference, bool>
     /// </summary>
-    public class SceneGroupLoader : MonoBehaviour<ISceneBuilder>
+    public class SceneGroupLoader : MonoBehaviour<ISceneBuilder, ILogger>
     {
         [SerializeField] private List<SceneReference> sceneRefs;
         [SerializeField] private bool withOverlay;
@@ -21,9 +21,11 @@ namespace _Project.Scripts.Core.SceneLoading
         [SerializeField] private bool loadOnAwake;
         
         private ISceneBuilder _sceneController;
-        protected override void Init(ISceneBuilder argument)
+        private ILogger _logger;
+        protected override void Init(ISceneBuilder argument, ILogger logger)
         {
             _sceneController = argument;
+            _logger = logger;
         }
 
         protected override void OnAwake()
@@ -40,7 +42,7 @@ namespace _Project.Scripts.Core.SceneLoading
             {
                 if (scene.BuildIndex == 0)
                 {
-                    Debug.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
+                    _logger.LogError($"GameObject: {gameObject.name} from Scene: {gameObject.scene.name} " +
                                    $"Tried to load BootStrap. Skip Scene loading");
                     continue;
                 }

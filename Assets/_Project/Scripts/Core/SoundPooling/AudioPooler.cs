@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Core.SoundPooling.Implement;
@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
+using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
 
 namespace _Project.Scripts.Core.SoundPooling
 {
@@ -19,8 +20,14 @@ namespace _Project.Scripts.Core.SoundPooling
     }
 
     [Service(typeof(AudioPooler), LoadScene = 0)]
-    public partial class AudioPooler : MonoBehaviour
+    public partial class AudioPooler : MonoBehaviour<ILogger>
     {
+        ILogger _logger;
+        protected override void Init(ILogger argument)
+        {
+            _logger = argument;
+        }
+        
         #region DebugProperties
 
         [SerializeField] private int numberOfActiveSources;
@@ -89,7 +96,7 @@ namespace _Project.Scripts.Core.SoundPooling
 #endif
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             for (int i = 0; i < bufferSize; i++)
             {
@@ -131,9 +138,9 @@ namespace _Project.Scripts.Core.SoundPooling
 
             if (audioSource != null)
             {
-                Debug.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
-                                 $"Replaced playing {audioSource.Clip.name} with " +
-                                 $"{audioConfig.Clip.name}");
+                _logger.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
+                                   $"Replaced playing {audioSource.Clip.name} with " +
+                                   $"{audioConfig.Clip.name}");
                 audioSource.Stop();
 
                 return GetNextAudioSource(audioConfig);
@@ -142,17 +149,17 @@ namespace _Project.Scripts.Core.SoundPooling
             switch (audioOverridePolicy)
             {
                 case AudioOverridePolicy.DontPlayOnFull:
-                    Debug.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
-                                     $"Skip playing {audioConfig.Clip.name}");
+                    _logger.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
+                                       $"Skip playing {audioConfig.Clip.name}");
                     return new EmptyAudioPlayer();
 
                 case AudioOverridePolicy.OverrideFirst:
                     PooledAudioSource first = activeSourcesByAudioType[audioConfig.AudioType]
                         .First(val => val.Priority == audioConfig.Priority);
 
-                    Debug.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
-                                     $"Replaced playing {first.Clip.name} with " +
-                                     $"{audioConfig.Clip.name}");
+                    _logger.LogWarning($"AudioPooler of AudioType: {audioConfig.AudioType} is Full. " +
+                                       $"Replaced playing {first.Clip.name} with " +
+                                       $"{audioConfig.Clip.name}");
                     first.Stop();
                     break;
             }
@@ -222,5 +229,7 @@ namespace _Project.Scripts.Core.SoundPooling
             PooledAudioSource audioComponent = audioObject.AddComponent<PooledAudioSource>();
             return audioComponent;
         }
+
+        
     }
 }
