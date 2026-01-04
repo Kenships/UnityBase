@@ -16,11 +16,11 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
         public event UnityAction OnJumpEvent;
         public event UnityAction OnPreviousEvent;
         public event UnityAction OnNextEvent;
-        public event UnityAction OnSprintEvent;
-        
+        public event UnityAction<bool> OnSprintEvent;
+
         public void OnMove(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            if (context.performed || context.canceled)
             {
                 OnMoveEvent?.Invoke(context.ReadValue<Vector2>());
             }
@@ -28,7 +28,7 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
 
         public void OnLook(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            if (context.performed || context.canceled)
             {
                 OnLookEvent?.Invoke(context.ReadValue<Vector2>());
             }
@@ -86,7 +86,11 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
         {
             if (context.performed)
             {
-                OnSprintEvent?.Invoke();
+                OnSprintEvent?.Invoke(true);
+            }
+            else if (context.canceled)
+            {
+                OnSprintEvent?.Invoke(false);
             }
         }
     }
