@@ -4,7 +4,7 @@ using UnityEditor;
 namespace _Project.Scripts.Core.SoundPooling.Editor
 {
     [CustomEditor(typeof(AudioPooler))]
-    public class AudioPoolEditor : UnityEditor.Editor
+    public class AudioPoolerEditor : UnityEditor.Editor
     {
         private SerializedProperty _createBuffer;
         private SerializedProperty _bufferSize;
@@ -64,6 +64,7 @@ namespace _Project.Scripts.Core.SoundPooling.Editor
             EditorGUILayout.PropertyField(_audioOverridePolicy);
 
             EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Debug Fields (ReadOnly)", EditorStyles.boldLabel);
             
             EditorGUILayout.PropertyField(_numberOfActiveSources);
             EditorGUILayout.PropertyField(_numberOfInactiveSources);

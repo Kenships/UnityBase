@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Core.SoundPooling.Implement;
 using _Project.Scripts.Core.SoundPooling.Interface;
+using _Project.Scripts.Util.Editor;
 using AYellowpaper.SerializedCollections;
 using Sisus.Init;
 using Unity.VisualScripting;
@@ -23,17 +24,17 @@ namespace _Project.Scripts.Core.SoundPooling
     public partial class AudioPooler : MonoBehaviour<ILogger>
     {
         ILogger _logger;
-        protected override void Init(ILogger argument)
+        protected override void Init(ILogger playerReader)
         {
-            _logger = argument;
+            _logger = playerReader;
         }
         
         #region DebugProperties
 
-        [SerializeField] private int numberOfActiveSources;
-        [SerializeField] private int numberOfInactiveSources;
-        [SerializeField] private SerializedDictionary<AudioType, List<PooledAudioSource>> activeSourcesByAudioType;
-        [SerializeField] private SerializedDictionary<int, List<PooledAudioSource>> activeSourcesBySceneIndex;
+        [SerializeField, ReadOnly] private int numberOfActiveSources;
+        [SerializeField, ReadOnly] private int numberOfInactiveSources;
+        [SerializeField, ReadOnly] private SerializedDictionary<AudioType, List<PooledAudioSource>> activeSourcesByAudioType;
+        [SerializeField, ReadOnly] private SerializedDictionary<int, List<PooledAudioSource>> activeSourcesBySceneIndex;
 
         #endregion
 

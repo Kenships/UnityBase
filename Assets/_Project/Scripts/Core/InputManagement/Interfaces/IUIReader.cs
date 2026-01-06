@@ -3,8 +3,10 @@ using UnityEngine.Events;
 
 namespace _Project.Scripts.Core.InputManagement.Interfaces
 {
-    public interface IUIReader
+    public interface IUIReader : IActionMapReader
     {
+        public event UnityAction<bool> OnUIEnableEvent;
+        
         public event UnityAction<Vector2> OnNavigateEvent;
         public event UnityAction OnSubmitEvent;
         public event UnityAction OnCancelEvent;

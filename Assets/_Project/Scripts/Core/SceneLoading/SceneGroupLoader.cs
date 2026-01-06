@@ -47,7 +47,7 @@ namespace _Project.Scripts.Core.SceneLoading
                     continue;
                 }
                 
-                loadingStrategy.Load(scene.BuildIndex, false, sceneGroup);
+                loadingStrategy.Load(scene.BuildIndex);
             }
 
             if (replaceCurrentScene)

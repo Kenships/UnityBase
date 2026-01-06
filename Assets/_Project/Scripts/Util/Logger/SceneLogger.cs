@@ -18,9 +18,9 @@ namespace _Project.Scripts.Util.Logger
             #endif
         }
 
-        protected override void Init(ILoggerFactory argument)
+        protected override void Init(ILoggerFactory playerReader)
         {
-            _logger = argument.CreateLogger();
+            _logger = playerReader.CreateLogger();
         }
         
         public void Log(string message)

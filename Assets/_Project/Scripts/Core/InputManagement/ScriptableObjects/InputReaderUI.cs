@@ -8,6 +8,8 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
     
     public partial class InputReaderSO : InputSystemActions.IUIActions, IUIReader
     {
+        public event UnityAction<bool> OnUIEnableEvent;
+        
         public event UnityAction<Vector2> OnNavigateEvent;
         public event UnityAction OnSubmitEvent;
         public event UnityAction OnCancelEvent;

@@ -10,9 +10,9 @@ namespace _Project.Scripts.Core.SceneLoading
     {
         [SerializeField] private List<int> focusedScenes;
         ISceneFocusRetrieval _sceneFocusRetrieval;
-        protected override void Init(ISceneFocusRetrieval argument)
+        protected override void Init(ISceneFocusRetrieval playerReader)
         {
-            _sceneFocusRetrieval = argument;
+            _sceneFocusRetrieval = playerReader;
         }
 
         private void Update()

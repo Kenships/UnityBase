@@ -9,9 +9,9 @@ namespace _Project.Scripts.Core.SoundPooling
 
     {
         private VolumeSO _volume;
-        protected override void Init(VolumeSO volume)
+        protected override void Init(VolumeSO playerReader)
         {
-            _volume = volume;
+            _volume = playerReader;
         }
 
         private void Start()

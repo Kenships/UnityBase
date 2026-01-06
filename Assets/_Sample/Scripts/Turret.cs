@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Core.InputManagement.Interfaces;
 using _Project.Scripts.Core.SceneLoading.Interfaces;
 using _Project.Scripts.Core.SoundPooling;
 using _Project.Scripts.Util.Timer.Timers;
@@ -9,28 +10,49 @@ using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
 
 namespace _Sample.Scripts
 {
-    public class Turret : MonoBehaviour<AudioPooler, MouseTrackingService, ISceneFocusRetrieval>
+    public class Turret : MonoBehaviour<AudioPooler, IPlayerReader, MouseTrackingService>
     {
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private Transform bulletSpawnPoint;
         [SerializeField] private float shootingSpeed;
         [SerializeField] private AudioClip bulletSound;
         private AudioPooler _audioPooler;
+        private IPlayerReader _playerReader;
         private MouseTrackingService _mouseTrackingService;
-        private ISceneFocusRetrieval _sceneFocusRetrieval;
         private CountdownTimer _cooldownTimer;
+        private bool _isAttacking;
 
-        protected override void Init(AudioPooler audioPooler, MouseTrackingService mouseTrackingService,
-            ISceneFocusRetrieval sceneFocusRetrieval)
+        protected override void Init(AudioPooler audioPooler, IPlayerReader playerReader, MouseTrackingService mouseTrackingService)
         {
             _audioPooler = audioPooler;
+            _playerReader = playerReader;
             _mouseTrackingService = mouseTrackingService;
-            _sceneFocusRetrieval = sceneFocusRetrieval;
         }
 
         protected override void OnAwake()
         {
             _cooldownTimer = new CountdownTimer(1f / shootingSpeed);
+            _playerReader.OnAttackEvent += PlayerReaderOnAttackEvent;
+            _playerReader.OnPlayerEnableEvent += PlayerReaderOnPlayerEnableEvent;
+        }
+
+        private void OnDestroy()
+        {
+            _playerReader.OnAttackEvent -= PlayerReaderOnAttackEvent;
+            _playerReader.OnPlayerEnableEvent -= PlayerReaderOnPlayerEnableEvent;
+        }
+
+        private void PlayerReaderOnPlayerEnableEvent(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                _isAttacking = false;
+            }
+        }
+
+        private void PlayerReaderOnAttackEvent(bool performed)
+        {
+            _isAttacking = performed;
         }
 
         private void FixedUpdate()
@@ -43,8 +65,7 @@ namespace _Sample.Scripts
 
         private void Update()
         {
-            if (Mouse.current.leftButton.isPressed && !_cooldownTimer.IsRunning &&
-                _sceneFocusRetrieval.IsFocused(gameObject.scene.buildIndex))
+            if (_isAttacking && !_cooldownTimer.IsRunning)
             {
                 _cooldownTimer.Reset();
                 _cooldownTimer.Start();

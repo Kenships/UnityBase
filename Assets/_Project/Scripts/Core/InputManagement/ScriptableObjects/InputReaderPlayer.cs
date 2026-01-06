@@ -8,15 +8,18 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
 {
     public partial class InputReaderSO : InputSystemActions.IPlayerActions, IPlayerReader
     {
+        public event UnityAction<bool> OnPlayerEnableEvent;
+        
         public event UnityAction<Vector2> OnMoveEvent;
         public event UnityAction<Vector2> OnLookEvent;
-        public event UnityAction OnAttackEvent;
+        public event UnityAction<bool> OnAttackEvent;
         public event UnityAction OnInteractEvent;
         public event UnityAction OnCrouchEvent;
         public event UnityAction OnJumpEvent;
         public event UnityAction OnPreviousEvent;
         public event UnityAction OnNextEvent;
         public event UnityAction OnSprintEvent;
+        public event UnityAction<Vector2> OnPlayerPointEvent;
         
         public void OnMove(InputAction.CallbackContext context)
         {
@@ -38,7 +41,11 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
         {
             if (context.performed)
             {
-                OnAttackEvent?.Invoke();
+                OnAttackEvent?.Invoke(true);
+            }
+            else if (context.canceled)
+            {
+                OnAttackEvent?.Invoke(false);
             }
         }
 
@@ -87,6 +94,14 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
             if (context.performed)
             {
                 OnSprintEvent?.Invoke();
+            }
+        }
+
+        public void OnPlayerPoint(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnPlayerPointEvent?.Invoke(context.ReadValue<Vector2>());
             }
         }
     }

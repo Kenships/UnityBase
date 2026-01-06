@@ -1,22 +1,41 @@
 ﻿using System;
+using _Project.Scripts.Core.InputManagement.Interfaces;
 using Sisus.Init;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace _Sample.Scripts
 {
     [Service(typeof(MouseTrackingService))]
-    public class MouseTrackingService : MonoBehaviour
+    public class MouseTrackingService : MonoBehaviour<IPlayerReader>
     {
         [SerializeField] LayerMask layer;
 
         private Vector2 _mousePosition;
+        private IPlayerReader _playerReader;
         
+        protected override void Init(IPlayerReader playerReader)
+        {
+            _playerReader = playerReader;
+        }
+
+        protected override void OnAwake()
+        {
+            _playerReader.OnPlayerPointEvent += OnPlayerPoint;
+        }
+
+        private void OnDestroy()
+        {
+            _playerReader.OnPlayerPointEvent -= OnPlayerPoint;
+        }
+
+        private void OnPlayerPoint(Vector2 position)
+        {
+            _mousePosition = position;
+        }
+
         public bool TryGetMouseWallHit(out Vector3 hitPoint)
         {
-            _mousePosition = Mouse.current.position.ReadValue();
-            Ray ray = Camera.main.ScreenPointToRay(_mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.crimson);
+            Ray ray = Camera.main!.ScreenPointToRay(_mousePosition);
             
             bool isHit = Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, Mathf.Infinity);
             
@@ -29,5 +48,7 @@ namespace _Sample.Scripts
             hitPoint = Vector3.zero;
             return false;
         }
+
+        
     }
 }

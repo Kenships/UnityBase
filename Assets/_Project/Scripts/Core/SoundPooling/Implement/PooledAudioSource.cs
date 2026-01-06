@@ -22,9 +22,9 @@ namespace _Project.Scripts.Core.SoundPooling.Implement
 
         private Coroutine _playingCoroutine;
         
-        protected override void Init(AudioPooler pooler)
+        protected override void Init(AudioPooler playerReader)
         {
-            _pooler = pooler;
+            _pooler = playerReader;
         }
         
         protected override void OnAwake()
