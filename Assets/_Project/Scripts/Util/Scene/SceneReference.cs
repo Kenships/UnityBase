@@ -9,7 +9,13 @@ namespace _Project.Scripts.Util.Scene
     public class SceneReference
     {
         [SerializeField] private int buildIndex;
-        public int BuildIndex => buildIndex;
+
+        public int BuildIndex
+        {
+            get => buildIndex;
+            set => buildIndex = value;
+        }
+        
 
         public string SceneName
         {
