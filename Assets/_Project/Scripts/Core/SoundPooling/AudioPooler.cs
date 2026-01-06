@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Core.SoundPooling.Implement;
 using _Project.Scripts.Core.SoundPooling.Interface;
+using _Project.Scripts.Util.CustomAttributes;
 using _Project.Scripts.Util.Editor;
 using AYellowpaper.SerializedCollections;
 using Sisus.Init;
@@ -28,23 +29,25 @@ namespace _Project.Scripts.Core.SoundPooling
         {
             _logger = playerReader;
         }
-        
-        #region DebugProperties
-
-        [SerializeField, ReadOnly] private int numberOfActiveSources;
-        [SerializeField, ReadOnly] private int numberOfInactiveSources;
-        [SerializeField, ReadOnly] private SerializedDictionary<AudioType, List<PooledAudioSource>> activeSourcesByAudioType;
-        [SerializeField, ReadOnly] private SerializedDictionary<int, List<PooledAudioSource>> activeSourcesBySceneIndex;
-
-        #endregion
 
         [SerializeField] private bool createBuffer;
-        [SerializeField] private int bufferSize;
+        [SerializeField, ShowIf(nameof(createBuffer))] private int bufferSize;
 
         [SerializeField] private AudioOverridePolicy audioOverridePolicy;
 
         [SerializeField] private SerializedDictionary<AudioType, int> maxAudioSources;
         [SerializeField] private SerializedDictionary<AudioType, AudioMixerGroup> audioMixerGroups;
+        
+        #region DebugProperties
+        [Space]
+        [SerializeField] private bool showDebug;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private int numberOfActiveSources;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private int numberOfInactiveSources;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private SerializedDictionary<AudioType, List<PooledAudioSource>> activeSourcesByAudioType;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private SerializedDictionary<int, List<PooledAudioSource>> activeSourcesBySceneIndex;
+
+        #endregion
+        
         private readonly Stack<PooledAudioSource> _inactiveSources = new();
 
         private readonly HashSet<AudioType> _audioTypes = new();
