@@ -10,7 +10,7 @@
 Description:
 A service used to manage and play audio from any class.
 
-Usage: 
+**Usage:**
 
 2D Audio
 ```c#
@@ -29,7 +29,7 @@ audioPooler
   .Play();
 ```
 
-Features: 
+**Features:** 
 
 An IAudioPlayer Object is returned after ```.Play();```.
 This object can be used to pause, play, and stop the sound. It also has an additional volume fade feature.
@@ -56,22 +56,22 @@ All Config methods:
 .WithMaxDistance(float maxDistance)
 .BypassReverbZones()
 ```
-Additional Features:
+**Additional Features:**
 
 From ```AudioPooler : IAudioPoolSceneController``` you can call ```FadeAllVolumeFromScene(int sceneBuildIndex, float volume, float duration)``` to fade all audioSources tied to a scene
 
-Limitations and future improvements: 
+**Limitations and future improvements:** 
 - There are currently AudioSource configurations that I did not implement; however, I believe I covered the most important ones, and adding additional ones is quite trivial
 - An ```AudioPlayer : IAudioPlayer``` is the default object returned by ```.Play()```, and it is a pointer to an allocated AudioSource. If the AudioSource is stopped, the pointer is set to null, and the client of the AudioPlayer will no longer be controlling anything.
 
 ## Input Reader 🎮
-Description: 
+**Description:** 
 A service to notify clients of user input.
 
-Usage:
-Inject using Init(args) or add the created scriptable object as a reference, then subscribe accordingly to the events required.
+**Usage:**
+Inject using Init(args) or add the created scriptable object as a reference, then subscribe accordingly to the events as required.
 
-example:
+**Dxample:**
 ```c#
 public class PauseListener : MonoBehaviour<IOverrideReader, ISceneFocusRetrieval>
 {
@@ -106,21 +106,21 @@ public class PauseListener : MonoBehaviour<IOverrideReader, ISceneFocusRetrieval
 
 Input Reader is separated into Interfaces that use UnityEvents as hooks to detect input
 
-Current Interfaces/Examples:
+**Current Interfaces:** 
 - ```IPlayerReader```
 - ```IUIReader```
 - ```IOverrideReader```
 
 All interfaces are inherited by ```InputReaderSO``` (SO stands for Scriptable Object). 
 
-Limitations and future improvement:
-Currently, there is no separation of the readers; they are separated into partial classes. I hope to separate each action map into its own scriptable object and have InputReader be the aggregate service.
+**Limitations and future improvement:**
+- Currently, there is no separation of the readers; they are separated into partial classes. I hope to separate each action map into its own scriptable object and have InputReader be the aggregate service.
 
 ## Scene Controller 🎬
-Description:
+**Description:**
 A service that provides easy access to scene loading and management of Active input maps tied to scene focus.
 
-Scene Loading Example:
+**Scene Loading Example:**
 ```c#
 sceneController
   .NewStrategy()
@@ -130,7 +130,7 @@ sceneController
   .WithOverlay()
   .Execute();
 ```
-Features:
+**Features:**
 - all in one ```SceneLoader``` Monobehavior class for any general loading uses
 - supplementary lightweight ```SceneUnloader``` used to unload menus, etc.
 - scene group; for a large environment, it might be helpful to chunk out sections into scenes, which can be organized via scene groups.
@@ -141,7 +141,7 @@ Features:
   - Similar to group focus stack, it tracks the default input map associated with a scene group
   - The input map is currently set when loading the scene.
  
-Limitations and future improvements:
+**Limitations and future improvements:**
 - There is currently no option to change the default map after the scene is loaded
 - Only one scene loading strategy can execute at a time. A potential upgrade is to add an execution queue.
 - There is no option to add extra logic to the scene execution. Could be added via a Config to hold a coroutine.
