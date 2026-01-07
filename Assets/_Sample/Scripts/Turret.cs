@@ -3,7 +3,8 @@ using _Project.Scripts.Core.SoundPooling;
 using _Project.Scripts.Util.Timer.Timers;
 using Sisus.Init;
 using UnityEngine;
-using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
+using AudioPooler = _Project.Scripts.Core.AudioPooling.AudioPooler;
+using AudioType = _Project.Scripts.Core.AudioPooling.Interface.AudioType;
 
 namespace _Sample.Scripts
 {

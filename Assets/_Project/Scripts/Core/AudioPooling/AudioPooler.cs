@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Scripts.Core.SoundPooling.Implement;
-using _Project.Scripts.Core.SoundPooling.Interface;
+using _Project.Scripts.Core.AudioPooling.Implement;
+using _Project.Scripts.Core.AudioPooling.Interface;
 using _Project.Scripts.Util.CustomAttributes;
 using AYellowpaper.SerializedCollections;
 using Sisus.Init;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
-using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
+using AudioType = _Project.Scripts.Core.AudioPooling.Interface.AudioType;
 using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
 
-namespace _Project.Scripts.Core.SoundPooling
+namespace _Project.Scripts.Core.AudioPooling
 {
     public enum AudioOverridePolicy
     {

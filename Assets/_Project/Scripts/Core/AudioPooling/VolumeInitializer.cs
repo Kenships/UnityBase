@@ -1,7 +1,7 @@
-﻿using _Project.Scripts.Core.SoundPooling.ScriptableObject;
+﻿using _Project.Scripts.Core.AudioPooling.ScriptableObject;
 using Sisus.Init;
 
-namespace _Project.Scripts.Core.SoundPooling
+namespace _Project.Scripts.Core.AudioPooling
 {
     public class VolumeInitializer : MonoBehaviour<VolumeSO>
 

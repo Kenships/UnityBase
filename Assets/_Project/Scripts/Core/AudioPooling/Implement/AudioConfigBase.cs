@@ -1,9 +1,9 @@
-﻿using _Project.Scripts.Core.SoundPooling.Interface;
+﻿using _Project.Scripts.Core.AudioPooling.Interface;
 using UnityEngine;
 using UnityEngine.Audio;
-using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
+using AudioType = _Project.Scripts.Core.AudioPooling.Interface.AudioType;
 
-namespace _Project.Scripts.Core.SoundPooling.Implement
+namespace _Project.Scripts.Core.AudioPooling.Implement
 {
     public abstract class AudioConfigBase<TSelf> : IAudioConfig where TSelf : AudioConfigBase<TSelf>
     {
@@ -15,6 +15,7 @@ namespace _Project.Scripts.Core.SoundPooling.Implement
         public AudioMixerGroup AudioMixerGroup { get; set; }
         public Vector3 Position { get; set; } = Vector3.zero;
         public float Pitch { get; set; } = 1f;
+        public float Volume { get; set; } = 1f;
         public float SpatialBlend { get; set; } = 1f;
         public float MinDistance { get; set; } = 1f;
         public float MaxDistance { get; set; } = 500f;
@@ -40,6 +41,12 @@ namespace _Project.Scripts.Core.SoundPooling.Implement
         {
             AudioType = audioType;
             AudioMixerGroup = _audioPooler.GetMixerFor(audioType);
+            return (TSelf) this;
+        }
+
+        public TSelf SetVolume(float volume)
+        {
+            Volume = volume;
             return (TSelf) this;
         }
 

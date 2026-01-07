@@ -1,4 +1,4 @@
-﻿namespace _Project.Scripts.Core.SoundPooling.Interface
+﻿namespace _Project.Scripts.Core.AudioPooling.Interface
 {
     public interface IAudioPoolSceneController
     {

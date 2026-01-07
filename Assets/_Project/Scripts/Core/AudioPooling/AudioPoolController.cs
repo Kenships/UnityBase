@@ -1,6 +1,6 @@
-﻿using _Project.Scripts.Core.SoundPooling.Interface;
+﻿using _Project.Scripts.Core.AudioPooling.Interface;
 
-namespace _Project.Scripts.Core.SoundPooling
+namespace _Project.Scripts.Core.AudioPooling
 {
     public partial class AudioPooler : IAudioPoolSceneController
     {
