@@ -1,5 +1,4 @@
-﻿using System;
-using _Project.Scripts.Util.Logger.Interface;
+﻿using _Project.Scripts.Util.Logger.Interface;
 using Sisus.Init;
 using UnityEngine;
 using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;

@@ -1,5 +1,4 @@
-﻿using System;
-using _Project.Scripts.Core.InputManagement.Interfaces;
+﻿using _Project.Scripts.Core.InputManagement.Interfaces;
 using Sisus.Init;
 using UnityEngine;
 

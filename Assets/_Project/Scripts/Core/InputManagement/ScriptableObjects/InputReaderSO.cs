@@ -1,5 +1,5 @@
 ﻿using _Project.Scripts.Core.InputManagement.Interfaces;
-using _Project.Scripts.Util.Editor;
+using _Project.Scripts.Util.CustomAttributes;
 using Sisus.Init;
 using UnityEngine;
 

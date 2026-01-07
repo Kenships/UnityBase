@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using _Project.Scripts.Core.SoundPooling.Interface;
-using _Project.Scripts.Util;
 using _Project.Scripts.Util.GameObject.Extension;
 using PrimeTween;
 using Sisus.Init;

@@ -1,6 +1,4 @@
-﻿using UnityEngine.Events;
-
-namespace _Project.Scripts.Core.InputManagement.Interfaces
+﻿namespace _Project.Scripts.Core.InputManagement.Interfaces
 {
     public interface IActionMapReader
     {

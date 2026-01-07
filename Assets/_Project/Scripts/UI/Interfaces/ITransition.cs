@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace _Project.Scripts.UI.Interfaces
+﻿namespace _Project.Scripts.UI.Interfaces
 {
     public interface ITransition
     {

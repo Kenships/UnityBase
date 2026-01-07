@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Project.Scripts.Core.SceneLoading.Interfaces;
-using _Project.Scripts.Util.Editor;
+using _Project.Scripts.Util.CustomAttributes;
 using _Project.Scripts.Util.Scene;
 using Sisus.Init;
 using UnityEngine;
