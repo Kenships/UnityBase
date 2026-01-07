@@ -1,5 +1,4 @@
 using _Project.Scripts.Core.InputManagement.Interfaces;
-using _Project.Scripts.Core.SoundPooling;
 using _Project.Scripts.Util.Timer.Timers;
 using Sisus.Init;
 using UnityEngine;

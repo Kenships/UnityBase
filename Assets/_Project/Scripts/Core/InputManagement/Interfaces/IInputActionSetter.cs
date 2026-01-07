@@ -2,6 +2,6 @@
 {
     public interface IInputActionSetter
     {
-        void SetAction(InputActionType actionType);
+        void SetAction(ActionMap actionMap);
     }
 }

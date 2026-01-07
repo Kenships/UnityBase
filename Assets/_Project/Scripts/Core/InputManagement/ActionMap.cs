@@ -1,6 +1,6 @@
 ﻿namespace _Project.Scripts.Core.InputManagement
 {
-    public enum InputActionType
+    public enum ActionMap
     {
         Player,
         UI,

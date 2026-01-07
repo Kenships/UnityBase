@@ -17,7 +17,7 @@ namespace _Project.Scripts.Core.SceneLoading
     {
         private struct SceneGroupData
         {
-            public InputActionType InputActionType { get; set; }
+            public ActionMap ActionMap { get; set; }
             public List<int> SceneBuildIndices { get; set; }
         }
 
@@ -53,7 +53,7 @@ namespace _Project.Scripts.Core.SceneLoading
                 _loadedScenes.Add(buildIndex, SceneGroup.None);
                 _sceneGroupStack.Push(new SceneGroupData
                                       {
-                                          InputActionType = InputActionType.Player,
+                                          ActionMap = ActionMap.Player,
                                           SceneBuildIndices = new List<int> { buildIndex }
                                       });
             }
@@ -63,9 +63,9 @@ namespace _Project.Scripts.Core.SceneLoading
 
         private void SetInputState()
         {
-            InputActionType inputActionType = _sceneGroupStack.Count == 0 ? InputActionType.Default : _sceneGroupStack.Peek().InputActionType;
+            ActionMap actionMap = _sceneGroupStack.Count == 0 ? ActionMap.Default : _sceneGroupStack.Peek().ActionMap;
 
-            _inputReader.SetAction(inputActionType);
+            _inputReader.SetAction(actionMap);
         }
 
         #endregion
@@ -82,7 +82,7 @@ namespace _Project.Scripts.Core.SceneLoading
             return _sceneGroupStack.Count > 0 ? _sceneGroupStack.Peek().SceneBuildIndices : new List<int>();
         }
         
-        private void UpdateSceneGroupStack(int sceneBuildIndex, SceneGroup sceneGroup, InputActionType inputActionType)
+        private void UpdateSceneGroupStack(int sceneBuildIndex, SceneGroup sceneGroup, ActionMap actionMap)
         {
             // Update SceneGroupStack
             if (sceneGroup != SceneGroup.None)
@@ -92,7 +92,7 @@ namespace _Project.Scripts.Core.SceneLoading
                     List<int> sceneList = new List<int> { sceneBuildIndex };
                     SceneGroupData sceneGroupData = new SceneGroupData
                                                     {
-                                                        SceneBuildIndices = sceneList, InputActionType = inputActionType
+                                                        SceneBuildIndices = sceneList, ActionMap = actionMap
                                                     };
                     _sceneGroupToSceneList.Add(sceneGroup, sceneList);
                     _sceneGroupStack.Push(sceneGroupData);
@@ -107,7 +107,7 @@ namespace _Project.Scripts.Core.SceneLoading
                 _sceneGroupStack.Push(new SceneGroupData
                                       {
                                           SceneBuildIndices = new List<int> { sceneBuildIndex },
-                                          InputActionType = inputActionType
+                                          ActionMap = actionMap
                                       });
             }
         }
@@ -197,7 +197,7 @@ namespace _Project.Scripts.Core.SceneLoading
                 // Item 1: SceneGroup, Item 2: InputActionType
                 yield return AdditiveLoadRoutine(sceneBuildIndex, sceneLoadingStrategy.SceneGroup,
                     sceneBuildIndex == sceneLoadingStrategy.ActiveSceneBuildIndex);
-                UpdateSceneGroupStack(sceneBuildIndex, sceneLoadingStrategy.SceneGroup, sceneLoadingStrategy.InputActionType);
+                UpdateSceneGroupStack(sceneBuildIndex, sceneLoadingStrategy.SceneGroup, sceneLoadingStrategy.ActionMap);
             }
             
             foreach (var sceneBuildIndex in sceneLoadingStrategy.ScenesToDisable)
@@ -345,7 +345,7 @@ namespace _Project.Scripts.Core.SceneLoading
             public bool ClearUnusedAssets { get; private set; } = false;
             public bool Overlay { get; private set; } = false;
             public SceneGroup SceneGroup { get; private set; }
-            public InputActionType InputActionType { get; private set; }
+            public ActionMap ActionMap { get; private set; }
 
             private readonly SceneController _controller;
 
@@ -370,13 +370,13 @@ namespace _Project.Scripts.Core.SceneLoading
 
             public SceneLoadingStrategy SetSceneGroup(SceneGroup sceneGroup)
             {
-                this.SceneGroup = sceneGroup;
+                SceneGroup = sceneGroup;
                 return this;
             }
-
-            public SceneLoadingStrategy SetActionMap(InputActionType inputActionType)
+            
+            public SceneLoadingStrategy SetActionMap(ActionMap actionMap)
             {
-                this.InputActionType = inputActionType;
+                ActionMap = actionMap;
                 return this;
             }
 

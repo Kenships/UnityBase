@@ -19,7 +19,7 @@ namespace _Project.Scripts.Core.SceneLoading
         [SerializeField] private List<SceneReference> scenesToUnload;
         [SerializeField] private bool withOverlay;
         [SerializeField] private SceneController.SceneGroup sceneGroup = SceneController.SceneGroup.None;
-        [SerializeField] private InputActionType inputActionType = InputActionType.Default;
+        [SerializeField] private ActionMap actionMap = ActionMap.Default;
         
         private ISceneBuilder _sceneController;
         private ILogger _logger;
@@ -44,7 +44,7 @@ namespace _Project.Scripts.Core.SceneLoading
                 _sceneController
                     .NewStrategy()
                     .SetSceneGroup(sceneGroup)
-                    .SetActionMap(inputActionType);
+                    .SetActionMap(actionMap);
 
             foreach (var scene in scenesToLoad)
             {

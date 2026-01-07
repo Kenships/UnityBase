@@ -501,7 +501,7 @@ MonoBehaviour:
   - buildIndex: 1
   withOverlay: 1
   sceneGroup: 0
-  inputActionType: 0
+  actionMap: 0
 --- !u!1 &182962101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,7 +1046,7 @@ MonoBehaviour:
   scenesToUnload: []
   withOverlay: 0
   sceneGroup: 1
-  inputActionType: 1
+  actionMap: 1
 --- !u!114 &775938720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1263,7 +1263,7 @@ MonoBehaviour:
   scenesToUnload: []
   withOverlay: 0
   sceneGroup: 1
-  inputActionType: 1
+  actionMap: 1
 --- !u!114 &955155409
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
     public partial class InputReaderSO  : ScriptableObject, IInputActionSetter
     {
         private InputSystemActions _inputSystemActions;
-        [SerializeField, ReadOnly] InputActionType activeActionType;
+        [SerializeField, ReadOnly] ActionMap activeActionMap;
         
         private void OnEnable()
         {
@@ -20,23 +20,23 @@ namespace _Project.Scripts.Core.InputManagement.ScriptableObjects
             _inputSystemActions.Override.SetCallbacks(this);
             _inputSystemActions.Enable();
             
-            SetAction(InputActionType.Default);
+            SetAction(ActionMap.Default);
         }
 
-        public void SetAction(InputActionType inputActionType)
+        public void SetAction(ActionMap actionMap)
         {
-            activeActionType = inputActionType;
-            switch (inputActionType)
+            activeActionMap = actionMap;
+            switch (actionMap)
             {
-                case InputActionType.Player:
+                case ActionMap.Player:
                     _inputSystemActions.Player.Enable();
                     _inputSystemActions.UI.Disable();
                     break;
-                case InputActionType.UI:
+                case ActionMap.UI:
                     _inputSystemActions.UI.Enable();
                     _inputSystemActions.Player.Disable();
                     break;
-                case InputActionType.Disabled:
+                case ActionMap.Disabled:
                     _inputSystemActions.UI.Disable();
                     _inputSystemActions.Player.Disable();
                     break;

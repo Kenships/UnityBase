@@ -307,7 +307,7 @@ MonoBehaviour:
   scenesToUnload: []
   withOverlay: 0
   sceneGroup: 1
-  inputActionType: 1
+  actionMap: 1
 --- !u!114 &591895316
 MonoBehaviour:
   m_ObjectHideFlags: 0
