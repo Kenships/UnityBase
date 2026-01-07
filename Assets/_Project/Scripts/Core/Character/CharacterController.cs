@@ -1,12 +1,15 @@
+using _Project.Scripts.Core.InputManagement.Interfaces;
 using _Project.Scripts.Core.InputManagement.ScriptableObjects;
 using KinematicCharacterController;
+using Sisus.Init;
 using UnityEngine;
 
 namespace _Project.Scripts.Core.Character
 {
-    public class CharacterController : MonoBehaviour, ICharacterController
+    public class CharacterController : MonoBehaviour<IPlayerReader>, ICharacterController
     {
-        [SerializeField] private InputReaderSO inputReader;
+
+        private IPlayerReader inputReader;
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private KinematicCharacterMotor motor;
 
@@ -21,7 +24,10 @@ namespace _Project.Scripts.Core.Character
         private float currentMovementSpeed;
         private Vector3 lastLookDirection;
         private bool jumpRequested;
-
+        protected override void Init(IPlayerReader argument)
+        {
+            inputReader = argument;
+        }
         private void Start()
         {
             motor = GetComponent<KinematicCharacterMotor>();
