@@ -1,75 +1,84 @@
 using _Project.Scripts.Core.InputManagement.Interfaces;
-using _Project.Scripts.Core.InputManagement.ScriptableObjects;
 using KinematicCharacterController;
 using Sisus.Init;
 using UnityEngine;
 
 namespace _Project.Scripts.Core.Character
 {
-    public class CharacterController : MonoBehaviour<IPlayerReader>, ICharacterController
+    public class CharacterController : MonoBehaviour<IPlayerReader, KinematicCharacterMotor>, ICharacterController
     {
-
-        private IPlayerReader inputReader;
-        [SerializeField] private Transform cameraTransform;
-        [SerializeField] private KinematicCharacterMotor motor;
-
         [SerializeField] private float walkSpeed = 5f;
         [SerializeField] private float sprintSpeed = 10f;
+        [SerializeField] private float planarAcceleration = 10f;
+        [SerializeField] private float verticalAcceleration = 20f;
         [SerializeField] private float rotationSpeed = 10f;
         [SerializeField] private float jumpHeight = 5f;
         [SerializeField] private float gravity = 20f;
-
-        private Vector2 rawMoveInput;
-        private Vector3 moveInputVector;
-        private float currentMovementSpeed;
-        private Vector3 lastLookDirection;
-        private bool jumpRequested;
-        protected override void Init(IPlayerReader argument)
+        
+        private IPlayerReader _inputReader;
+        private KinematicCharacterMotor _motor;
+        private Transform _cameraTransform;
+        
+        private Vector2 _rawMoveInput;
+        private Vector3 _moveInputVector;
+        private float _currentMovementSpeed;
+        private Vector3 _lastLookDirection;
+        private bool _jumpRequested;
+        
+        protected override void Init(IPlayerReader argument, KinematicCharacterMotor motor)
         {
-            inputReader = argument;
+            _inputReader = argument;
+            _motor = motor;
         }
+
+        //Potentially change to use DI
+        protected override void OnAwake()
+        {
+            _motor = GetComponent<KinematicCharacterMotor>();
+            _motor.CharacterController = this;
+            _cameraTransform = Camera.main!.transform;
+        }
+
         private void Start()
         {
-            motor = GetComponent<KinematicCharacterMotor>();
-            motor.CharacterController = this;
-            currentMovementSpeed = walkSpeed;
-            lastLookDirection = Vector3.forward;
+            _currentMovementSpeed = walkSpeed;
+            _lastLookDirection = Vector3.forward;
         }
 
         private void OnEnable()
         {
-            inputReader.OnMoveEvent += HandleMove;
-            inputReader.OnSprintEvent += HandleSprint;
-            inputReader.OnJumpEvent += HandleJump;
+            _inputReader.OnMoveEvent += HandleMove;
+            _inputReader.OnSprintEvent += HandleSprint;
+            _inputReader.OnJumpEvent += HandleJump;
         }
 
         private void OnDisable()
         {
-            inputReader.OnMoveEvent -= HandleMove;
-            inputReader.OnSprintEvent -= HandleSprint;
-            inputReader.OnJumpEvent -= HandleJump;
+            _inputReader.OnMoveEvent -= HandleMove;
+            _inputReader.OnSprintEvent -= HandleSprint;
+            _inputReader.OnJumpEvent -= HandleJump;
         }
 
         private void HandleMove(Vector2 movementInput)
         {
-            rawMoveInput = movementInput;
+            _rawMoveInput = movementInput;
         }
         private void UpdateMoveVector()
         {
-            Vector3 cameraForward = cameraTransform.forward;
-            Vector3 cameraRight = cameraTransform.right;
+            Vector3 cameraForward = _cameraTransform.forward;
+            Vector3 cameraRight = _cameraTransform.right;
             cameraForward.y = 0;
             cameraRight.y = 0;
             cameraForward.Normalize();
             cameraRight.Normalize();
 
             // character direction is relative to the camera
-            moveInputVector = (cameraForward * rawMoveInput.y + cameraRight * rawMoveInput.x).normalized;
+            _moveInputVector = (cameraForward * _rawMoveInput.y + cameraRight * _rawMoveInput.x).normalized;
 
-            if (moveInputVector.sqrMagnitude > 0.01f)
+            if (_moveInputVector.sqrMagnitude > 0.01f)
             {
                 // for rotation
-                lastLookDirection = moveInputVector.normalized;
+                _lastLookDirection = _moveInputVector.normalized;
             }
         }
 
@@ -77,17 +86,17 @@ namespace _Project.Scripts.Core.Character
         {
             if (isSprinting)
             {
-                currentMovementSpeed = sprintSpeed;
+                _currentMovementSpeed = sprintSpeed;
             }
             else
             {
-                currentMovementSpeed = walkSpeed;
+                _currentMovementSpeed = walkSpeed;
             }
         }
 
         private void HandleJump()
         {
-            jumpRequested = true;
+            _jumpRequested = true;
         }
 
         public void BeforeCharacterUpdate(float deltaTime)
@@ -97,20 +106,20 @@ namespace _Project.Scripts.Core.Character
 
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(lastLookDirection);
+            Quaternion targetRotation = Quaternion.LookRotation(_lastLookDirection);
             currentRotation = Quaternion.Slerp(currentRotation, targetRotation, rotationSpeed * deltaTime);
         }
 
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
-            if (jumpRequested && motor.GroundingStatus.IsStableOnGround)
+            if (_jumpRequested && _motor.GroundingStatus.IsStableOnGround)
             {
                 currentVelocity.y = Mathf.Sqrt(2 * jumpHeight * gravity);
-                jumpRequested = false;
-                motor.ForceUnground();
+                _jumpRequested = false;
+                _motor.ForceUnground();
             }
 
-            if (!motor.GroundingStatus.IsStableOnGround)
+            if (!_motor.GroundingStatus.IsStableOnGround)
             {
                 currentVelocity.y -= gravity * deltaTime;
             }
@@ -119,9 +128,9 @@ namespace _Project.Scripts.Core.Character
                 currentVelocity.y = 0;
             }
 
-            Vector3 horizontalTarget = moveInputVector * currentMovementSpeed;
-            currentVelocity.x = Mathf.Lerp(currentVelocity.x, horizontalTarget.x, 10f * deltaTime);
-            currentVelocity.z = Mathf.Lerp(currentVelocity.z, horizontalTarget.z, 10f * deltaTime);
+            Vector3 horizontalTarget = _moveInputVector * _currentMovementSpeed;
+            currentVelocity.x = Mathf.Lerp(currentVelocity.x, horizontalTarget.x, planarAcceleration * deltaTime);
+            currentVelocity.z = Mathf.Lerp(currentVelocity.z, horizontalTarget.z, verticalAcceleration * deltaTime);
         }
 
         public void AfterCharacterUpdate(float deltaTime) { }
