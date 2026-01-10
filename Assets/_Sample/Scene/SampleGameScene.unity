@@ -359,6 +359,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4663471737092476882, guid: 04801831af91f214bb183e599e3e000f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7169109582913589390, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_Name
       value: Turret
@@ -369,7 +373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9030486142062985029, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.727
       objectReference: {fileID: 0}
     - target: {fileID: 9030486142062985029, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -445,6 +449,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4663471737092476882, guid: 04801831af91f214bb183e599e3e000f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7169109582913589390, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_Name
       value: Turret
@@ -455,7 +463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9030486142062985029, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.727
       objectReference: {fileID: 0}
     - target: {fileID: 9030486142062985029, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -640,6 +648,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4663471737092476882, guid: 04801831af91f214bb183e599e3e000f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7169109582913589390, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_Name
       value: Turret
@@ -650,7 +662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9030486142062985029, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.727
       objectReference: {fileID: 0}
     - target: {fileID: 9030486142062985029, guid: 04801831af91f214bb183e599e3e000f, type: 3}
       propertyPath: m_LocalPosition.z

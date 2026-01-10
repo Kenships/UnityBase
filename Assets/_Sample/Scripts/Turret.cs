@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Core.InputManagement.Interfaces;
 using _Project.Scripts.Util.Timer.Timers;
 using Sisus.Init;
@@ -18,6 +19,7 @@ namespace _Sample.Scripts
         private MouseTrackingService _mouseTrackingService;
         private CountdownTimer _cooldownTimer;
         private bool _isAttacking;
+        private bool _onWall;
 
         protected override void Init(AudioPooler audioPooler, IPlayerReader playerReader, MouseTrackingService mouseTrackingService)
         {
@@ -57,12 +59,17 @@ namespace _Sample.Scripts
             if (_mouseTrackingService.TryGetMouseWallHit(out Vector3 hitPoint))
             {
                 transform.LookAt(hitPoint);
+                _onWall = true;
+            }
+            else
+            {
+                _onWall = false;
             }
         }
 
         private void Update()
         {
-            if (_isAttacking && !_cooldownTimer.IsRunning)
+            if (_isAttacking && _onWall && !_cooldownTimer.IsRunning)
             {
                 _cooldownTimer.Reset();
                 _cooldownTimer.Start();
