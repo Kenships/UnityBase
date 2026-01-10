@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace _Project.Scripts.Core.InputManagement.Interfaces
@@ -15,7 +15,7 @@ namespace _Project.Scripts.Core.InputManagement.Interfaces
         public event UnityAction OnJumpEvent;
         public event UnityAction OnPreviousEvent;
         public event UnityAction OnNextEvent;
-        public event UnityAction OnSprintEvent;
+        public event UnityAction<bool> OnSprintEvent;
         public event UnityAction<Vector2> OnPlayerPointEvent;
     }
 }
