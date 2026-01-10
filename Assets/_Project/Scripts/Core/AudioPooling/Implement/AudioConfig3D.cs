@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Scripts.Core.SoundPooling.Implement
+namespace _Project.Scripts.Core.AudioPooling.Implement
 {
     public class AudioConfig3D : AudioConfigBase<AudioConfig3D>
     {

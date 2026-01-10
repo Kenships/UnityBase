@@ -2,7 +2,7 @@
 
 namespace _Project.Scripts.Core.InputManagement.Interfaces
 {
-    public interface IOverrideReader
+    public interface IOverrideReader : IActionMapReader
     {
         public event UnityAction OnEscapeEvent;
     }

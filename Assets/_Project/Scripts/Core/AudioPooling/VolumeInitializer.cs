@@ -1,17 +1,15 @@
-﻿using System;
-using _Project.Scripts.Core.SoundPooling.ScriptableObject;
+﻿using _Project.Scripts.Core.AudioPooling.ScriptableObject;
 using Sisus.Init;
-using UnityEngine;
 
-namespace _Project.Scripts.Core.SoundPooling
+namespace _Project.Scripts.Core.AudioPooling
 {
     public class VolumeInitializer : MonoBehaviour<VolumeSO>
 
     {
         private VolumeSO _volume;
-        protected override void Init(VolumeSO volume)
+        protected override void Init(VolumeSO playerReader)
         {
-            _volume = volume;
+            _volume = playerReader;
         }
 
         private void Start()

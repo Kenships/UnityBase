@@ -297,12 +297,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a94ed4d94741cf9171f9df3c6c3360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Core.SceneLoading.SceneLoader
-  sceneRef:
-    buildIndex: 4
+  loadOnAwake: 0
+  setActive: 0
+  activeSceneIndex:
+    buildIndex: 0
+  scenesToLoad:
+  - buildIndex: 4
+  unloadDisabled: 0
   scenesToUnload: []
   withOverlay: 0
-  setActive: 0
   sceneGroup: 1
+  actionMap: 1
 --- !u!114 &591895316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,7 +326,7 @@ MonoBehaviour:
       - m_Target: {fileID: 591895315}
         m_TargetAssemblyTypeName: _Project.Scripts.Core.SceneLoading.SceneLoader,
           Assembly-CSharp
-        m_MethodName: LoadSceneAdditive
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

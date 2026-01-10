@@ -1,5 +1,4 @@
-﻿using System;
-using _Project.Scripts.Util.Logger.Interface;
+﻿using _Project.Scripts.Util.Logger.Interface;
 using Sisus.Init;
 using UnityEngine;
 using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
@@ -18,9 +17,9 @@ namespace _Project.Scripts.Util.Logger
             #endif
         }
 
-        protected override void Init(ILoggerFactory argument)
+        protected override void Init(ILoggerFactory playerReader)
         {
-            _logger = argument.CreateLogger();
+            _logger = playerReader.CreateLogger();
         }
         
         public void Log(string message)

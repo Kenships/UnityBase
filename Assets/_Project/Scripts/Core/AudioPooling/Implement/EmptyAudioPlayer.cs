@@ -1,13 +1,13 @@
 ﻿using System;
-using _Project.Scripts.Core.SoundPooling.Interface;
+using _Project.Scripts.Core.AudioPooling.Interface;
 
-namespace _Project.Scripts.Core.SoundPooling.Implement
+namespace _Project.Scripts.Core.AudioPooling.Implement
 {
     public class EmptyAudioPlayer : IAudioPlayer
     {
         public event Action OnAudioFinished;
 
-        public void FadeVolume(float volume, float duration = 0)
+        public void FadeVolume(float volume, float duration = 0, bool stopOnSilent = true)
         {
             //noop
         }

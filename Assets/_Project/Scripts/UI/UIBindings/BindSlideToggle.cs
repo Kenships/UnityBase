@@ -1,8 +1,6 @@
 ﻿using _Project.Scripts.UI.UIElements;
 using Obvious.Soap;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace _Project.Scripts.UI.UIBindings
 {

@@ -1,8 +1,8 @@
 ﻿using System;
-using _Project.Scripts.Core.SoundPooling.Interface;
+using _Project.Scripts.Core.AudioPooling.Interface;
 using UnityEngine;
 
-namespace _Project.Scripts.Core.SoundPooling.Implement
+namespace _Project.Scripts.Core.AudioPooling.Implement
 {
     /// <summary>
     /// Wrapper class for any IAudioPlayer
@@ -31,9 +31,9 @@ namespace _Project.Scripts.Core.SoundPooling.Implement
             _audioSource = null;
         }
 
-        public void FadeVolume(float volume, float duration = 0f)
+        public void FadeVolume(float volume, float duration = 0, bool stopOnSilent = true)
         {
-            _audioSource.FadeVolume(volume, duration);
+            _audioSource.FadeVolume(volume, duration, stopOnSilent);
         }
 
         public void Play()

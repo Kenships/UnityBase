@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Scripts.Core.SoundPooling.Implement;
-using _Project.Scripts.Core.SoundPooling.Interface;
+using _Project.Scripts.Core.AudioPooling.Implement;
+using _Project.Scripts.Core.AudioPooling.Interface;
+using _Project.Scripts.Util.CustomAttributes;
 using AYellowpaper.SerializedCollections;
 using Sisus.Init;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
-using AudioType = _Project.Scripts.Core.SoundPooling.Interface.AudioType;
+using AudioType = _Project.Scripts.Core.AudioPooling.Interface.AudioType;
 using ILogger = _Project.Scripts.Util.Logger.Interface.ILogger;
 
-namespace _Project.Scripts.Core.SoundPooling
+namespace _Project.Scripts.Core.AudioPooling
 {
     public enum AudioOverridePolicy
     {
@@ -23,27 +24,29 @@ namespace _Project.Scripts.Core.SoundPooling
     public partial class AudioPooler : MonoBehaviour<ILogger>
     {
         ILogger _logger;
-        protected override void Init(ILogger argument)
+        protected override void Init(ILogger playerReader)
         {
-            _logger = argument;
+            _logger = playerReader;
         }
-        
-        #region DebugProperties
-
-        [SerializeField] private int numberOfActiveSources;
-        [SerializeField] private int numberOfInactiveSources;
-        [SerializeField] private SerializedDictionary<AudioType, List<PooledAudioSource>> activeSourcesByAudioType;
-        [SerializeField] private SerializedDictionary<int, List<PooledAudioSource>> activeSourcesBySceneIndex;
-
-        #endregion
 
         [SerializeField] private bool createBuffer;
-        [SerializeField] private int bufferSize;
+        [SerializeField, ShowIf(nameof(createBuffer))] private int bufferSize;
 
         [SerializeField] private AudioOverridePolicy audioOverridePolicy;
 
         [SerializeField] private SerializedDictionary<AudioType, int> maxAudioSources;
         [SerializeField] private SerializedDictionary<AudioType, AudioMixerGroup> audioMixerGroups;
+        
+        #region DebugProperties
+        [Space]
+        [SerializeField] private bool showDebug;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private int numberOfActiveSources;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private int numberOfInactiveSources;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private SerializedDictionary<AudioType, List<PooledAudioSource>> activeSourcesByAudioType;
+        [SerializeField, ReadOnly, ShowIf(nameof(showDebug))] private SerializedDictionary<int, List<PooledAudioSource>> activeSourcesBySceneIndex;
+
+        #endregion
+        
         private readonly Stack<PooledAudioSource> _inactiveSources = new();
 
         private readonly HashSet<AudioType> _audioTypes = new();

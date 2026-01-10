@@ -30,7 +30,7 @@ namespace Sisus.Init
 	public abstract class MonoBehaviour<TArgument> : MonoBehaviourBase, IInitializable<TArgument>
 	{
 		/// <summary>
-		/// Provides the <see cref="Component"/> with the <paramref name="argument">object</paramref> that it depends on.
+		/// Provides the <see cref="Component"/> with the <paramref name="playerReader">object</paramref> that it depends on.
 		/// <para>
 		/// You can think of the <see cref="Init"/> method as a parameterized constructor alternative for the component.
 		/// </para>
@@ -48,8 +48,8 @@ namespace Sisus.Init
 		/// was added is <see cref="GameObject.activeInHierarchy">inactive</see> unlike some other initialization event functions such as Awake and OnEnable.
 		/// </para>
 		/// </summary>
-		/// <param name="argument"> Object that this component depends on. </param>
-		protected abstract void Init(TArgument argument);
+		/// <param name="playerReader"> Object that this component depends on. </param>
+		protected abstract void Init(TArgument playerReader);
 
 		/// <summary>
 		/// Assigns an argument received during initialization to a field or property by the <paramref name="memberName">given name</paramref>.
@@ -128,12 +128,12 @@ namespace Sisus.Init
 		}
 
 		/// <inheritdoc/>
-		void IInitializable<TArgument>.Init(TArgument argument)
+		void IInitializable<TArgument>.Init(TArgument playerReader)
 		{
 			initState = InitState.Initializing;
-			HandleValidate(Context.MainThread, argument);
+			HandleValidate(Context.MainThread, playerReader);
 
-			Init(argument);
+			Init(playerReader);
 
 			initState = InitState.Initialized;
 		}

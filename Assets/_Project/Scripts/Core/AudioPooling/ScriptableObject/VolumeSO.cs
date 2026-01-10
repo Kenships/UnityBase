@@ -1,11 +1,9 @@
-using System;
 using Obvious.Soap;
-using PrimeTween;
 using Sisus.Init;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace _Project.Scripts.Core.SoundPooling.ScriptableObject
+namespace _Project.Scripts.Core.AudioPooling.ScriptableObject
 {
     [Service(typeof(VolumeSO), ResourcePath = "ScriptableObjects/Audio/VolumeSO")]
     [CreateAssetMenu(fileName = "VolumeSO", menuName = "Scriptable Objects/Audio/VolumeSO")]
